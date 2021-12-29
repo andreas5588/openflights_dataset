@@ -1,14 +1,12 @@
 # openflights_dataset
 Openflights dataset, datamodel for InterSystems IRIS
 
-## InterSystems IRIS - LOAD DATA 
+You find here a flight datamodel for the Database InterSystems IRIS. This model is inspired by https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021
 
-https://docs.intersystems.com/iris20212/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
+## InterSystems IRIS - LOAD DATA 
+To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2021.2.0.617 (preview) is used. Details about the new SQL command canbe found here: https://docs.intersystems.com/iris20212/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
 
 ## Datasets
-This Dataset is inspited by https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021
-
-
 Dataset formats: https://openflights.org/data.html#airline
 
 * airlines.dat 
@@ -19,7 +17,6 @@ Route file contains routes between airports on airlines spanning the globe
 
 * planes.dat 
 The OpenFlights plane file contains a curated selection of 173 passenger aircraft with IATA and/or ICAO codes, covering the vast majority of flights operated today and commonly used in flight schedules and reservation systems.
-	
 
 Dataset formats: https://ourairports.com/help/data-dictionary.html
 
@@ -53,17 +50,15 @@ http://openflights.org/data.html
 http://www.aci.aero/
 http://en.wikipedia.org/wiki/List_of_the_world%27s_busiest_airports_by_passenger_traffic#2014_statistics
 
-
-
 ## repos
 https://github.com/jpatokal/openflights
 https://github.com/jpatokal/openflights/blob/master/sql/create.sql
 https://openflights.org/data.html#airline
 
 ## Docker
+Some docker notes
 
 docker cp <src-path> <container>:<dest-path> ... 
-
 docker cp <container>:<src-path> <local-dest-path>
 
 * docker cp D:\dev\openflights_dataset\data\airlines.dat my-iris:/usr/airlines.dat
