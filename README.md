@@ -38,7 +38,7 @@ Each row in this dataset represents a single radio navigation. When the navaid i
 Each row represents a high-level administrative subdivision of a country. The iso_region column in airports.csv links to the code column in this dataset. 
 
 
-![all tables and row counts](/docs/openflights.png)
+![all tables and row counts](/doc/openflights.png)
 
 ## Data sources
 Raw data used to compute flight route geometries:
