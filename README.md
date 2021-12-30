@@ -1,4 +1,4 @@
-# openflights_dataset
+# Openflights demo dataset
 Openflights dataset, datamodel for InterSystems IRIS
 
 You find here a flight datamodel for the Database InterSystems IRIS. This model is inspired by https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021
@@ -36,13 +36,13 @@ Each row represents a high-level administrative subdivision of a country. The is
 
 ## State of loading
 
-* airlines.dat (6.162 of 6.162 rows loaded)
+* :heavy_check_mark: airlines.dat (6.162 of 6.162 rows loaded)
 * airport_freq.csv (28.074 of 28.969 rows loaded)
-* airports.csv (69.197 of 69.197 rows loaded) 
-* countries.csv (247 of 247 rows loaded)
-* navaids.csv (11.020 of 11.020 rows loaded)
-* planes.dat (246 of 246 rows loaded)
-* regions.csv (3.964 of 3.964 rows loaded)
+* :heavy_check_mark: airports.csv (69.197 of 69.197 rows loaded) 
+* :heavy_check_mark: countries.csv (247 of 247 rows loaded)
+* :heavy_check_mark: navaids.csv (11.020 of 11.020 rows loaded)
+* :heavy_check_mark: planes.dat (246 of 246 rows loaded)
+* :heavy_check_mark: regions.csv (3.964 of 3.964 rows loaded)
 * routes.dat (66.392 of 67.663 rows loaded)
 * runways.csv (42.929 of  rows 42.932 loaded)
 
