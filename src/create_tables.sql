@@ -70,7 +70,7 @@ GO
 CREATE TABLE flights.airports 
 (
   id int NOT NULL,
-  ident varchar(8),
+  ident varchar(8) NOT NULL UNIQUE ,
   type varchar(25) NOT NULL,
   name varchar(255),
   latitude_deg DOUBLE,
@@ -249,77 +249,77 @@ DROP TABLE flights.runways
 GO
 CREATE TABLE flights.runways 
 (
-  id            INT NOT NULL,
-  airport_id    INT NOT NULL,
-  airport_ident VARCHAR(8) NOT NULL,
-  length_ft     INT,
-  width_ft      INT,
-  surface       TEXT,
-  lighted       BIT,
-  closed        BIT,
-  le_ident      VARCHAR(6),
-  le_latitude_deg DOUBLE,
-  le_longitude_deg DOUBLE,
-  le_location   DOUBLE,
-  le_elevation_ft INT,
-  le_heading_degt DOUBLE,
-  le_displaced_threshold_ft INT,
-  he_ident      VARCHAR(6),
-  he_latitude_deg DOUBLE,
-  he_longitude_deg DOUBLE,
-  he_location   DOUBLE,
-  he_elevation_ft INT,
-  he_heading_degt DOUBLE,
-  he_displaced_threshold_ft INT,
-  CONSTRAINT id_pk PRIMARY KEY (id)
+	id            INT NOT NULL,
+	airport_id    INT NOT NULL,
+	airport_ident VARCHAR(8) NOT NULL,
+	length_ft     INT,
+	width_ft      INT,
+	surface       TEXT,
+	lighted       BIT,
+	closed        BIT,
+	le_ident      VARCHAR(6),
+	le_latitude_deg DOUBLE,
+	le_longitude_deg DOUBLE,
+	le_location   DOUBLE,
+	le_elevation_ft INT,
+	le_heading_degt DOUBLE,
+	le_displaced_threshold_ft INT,
+	he_ident      VARCHAR(6),
+	he_latitude_deg DOUBLE,
+	he_longitude_deg DOUBLE,
+	he_location   DOUBLE,
+	he_elevation_ft INT,
+	he_heading_degt DOUBLE,
+	he_displaced_threshold_ft INT,
+	CONSTRAINT id_pk PRIMARY KEY (id)
 )
 GO
 LOAD DATA FROM FILE '/usr/runways.csv' 
 INTO flights.runways
-(
-id
-,airport_id
-,airport_ident
-,length_ft
-,width_ft
-,surface
-,lighted
-,closed
-,le_ident
-,le_latitude_deg
-,le_longitude_deg
-,le_elevation_ft
-,le_heading_degT
-,le_displaced_threshold_ft
-,he_ident
-,he_latitude_deg
-,he_longitude_deg
-,he_elevation_ft
-,he_heading_degT
-,he_displaced_threshold_ft
+	(
+	id
+	,airport_id
+	,airport_ident
+	,length_ft
+	,width_ft
+	,surface
+	,lighted
+	,closed
+	,le_ident
+	,le_latitude_deg
+	,le_longitude_deg
+	,le_elevation_ft
+	,le_heading_degT
+	,le_displaced_threshold_ft
+	,he_ident
+	,he_latitude_deg
+	,he_longitude_deg
+	,he_elevation_ft
+	,he_heading_degT
+	,he_displaced_threshold_ft
 ) 
 VALUES 
 (
-id
-,airport_ref
-,airport_ident
-,length_ft
-,width_ft
-,surface
-,lighted
-,closed
-,le_ident
-,le_latitude_deg
-,le_longitude_deg
-,le_elevation_ft
-,le_heading_degT
-,le_displaced_threshold_ft
-,he_ident
-,he_latitude_deg
-,he_longitude_deg
-,he_elevation_ft
-,he_heading_degT
-,he_displaced_threshold_ft
+	id
+	,airport_ref
+	,airport_ident
+	,length_ft
+	,width_ft
+	,surface
+	,lighted
+	,closed
+	,le_ident
+	,le_latitude_deg
+	,le_longitude_deg
+	,le_elevation_ft
+	,le_heading_degT
+	,le_displaced_threshold_ft
+	,he_ident
+	,he_latitude_deg
+	,he_longitude_deg
+	,he_elevation_ft
+	,he_heading_degT
+	,he_displaced_threshold_ft
 )
 USING {"from": {"file": {"header":"1","columnseparator":","} }}
 GO
@@ -327,75 +327,76 @@ DROP TABLE flights.navaids
 GO
 CREATE TABLE flights.navaids 
 (
-  id            INT NOT NULL,
-  filename      varchar(255),
-  ident         varchar(255),
-  name          varchar(255),
-  TYPE          varchar(8),
-  frequency_khz INT,
-  latitude_deg  DOUBLE,
-  longitude_deg DOUBLE,
-  location      DOUBLE,
-  elevation_ft  INT,
-  iso_country   varchar(255),
-  dme_frequency_khz DOUBLE,
-  dme_channel   varchar(255),
-  dme_latitude_deg DOUBLE,
-  dme_longitude_deg DOUBLE,
-  dme_elevation_ft INT,
-  slaved_variation_deg DOUBLE,
-  magnetic_variation_deg DOUBLE,
-  usagetype     varchar(8),
-  POWER         varchar(8),
-  associated_airport VARCHAR(8)
+	  id            INT NOT NULL,
+	  filename      varchar(255),
+	  ident         varchar(255),
+	  name          varchar(255),
+	  TYPE          varchar(8),
+	  frequency_khz INT,
+	  latitude_deg  DOUBLE,
+	  longitude_deg DOUBLE,
+	  location      DOUBLE,
+	  elevation_ft  INT,
+	  iso_country   varchar(255),
+	  dme_frequency_khz DOUBLE,
+	  dme_channel   varchar(255),
+	  dme_latitude_deg DOUBLE,
+	  dme_longitude_deg DOUBLE,
+	  dme_elevation_ft INT,
+	  slaved_variation_deg DOUBLE,
+	  magnetic_variation_deg DOUBLE,
+	  usagetype     varchar(8),
+	  POWER         varchar(8),
+	  associated_airport VARCHAR(8),
+	  CONSTRAINT id_pk PRIMARY KEY (id)
 )
 GO
 LOAD DATA FROM FILE '/usr/navaids.csv' 
 INTO flights.navaids
 (
- id
-,filename
-,ident
-,name
-,type
-,frequency_khz
-,latitude_deg
-,longitude_deg
-,elevation_ft
-,iso_country
-,dme_frequency_khz
-,dme_channel
-,dme_latitude_deg
-,dme_longitude_deg
-,dme_elevation_ft
-,slaved_variation_deg
-,magnetic_variation_deg
-,usageType
-,power
-,associated_airport
+	 id
+	,filename
+	,ident
+	,name
+	,type
+	,frequency_khz
+	,latitude_deg
+	,longitude_deg
+	,elevation_ft
+	,iso_country
+	,dme_frequency_khz
+	,dme_channel
+	,dme_latitude_deg
+	,dme_longitude_deg
+	,dme_elevation_ft
+	,slaved_variation_deg
+	,magnetic_variation_deg
+	,usageType
+	,power
+	,associated_airport
 ) 
 VALUES 
 (
-id
-,filename
-,ident
-,name
-,type
-,frequency_khz
-,latitude_deg
-,longitude_deg
-,elevation_ft
-,iso_country
-,dme_frequency_khz
-,dme_channel
-,dme_latitude_deg
-,dme_longitude_deg
-,dme_elevation_ft
-,slaved_variation_deg
-,magnetic_variation_deg
-,usageType
-,power
-,associated_airport
+	id
+	,filename
+	,ident
+	,name
+	,type
+	,frequency_khz
+	,latitude_deg
+	,longitude_deg
+	,elevation_ft
+	,iso_country
+	,dme_frequency_khz
+	,dme_channel
+	,dme_latitude_deg
+	,dme_longitude_deg
+	,dme_elevation_ft
+	,slaved_variation_deg
+	,magnetic_variation_deg
+	,usageType
+	,power
+	,associated_airport
 )
 USING {"from": {"file": {"header":"1","columnseparator":","} }}
 GO
@@ -410,7 +411,8 @@ CREATE TABLE flights.planes
 (
   name varchar(255) NOT NULL,
   iata varchar(3)  NULL,
-  icao varchar(4)  NULL
+  icao varchar(4)  NULL,
+  CONSTRAINT name_pk PRIMARY KEY (name)
 )
 GO
 LOAD DATA FROM FILE '/usr/planes.dat' 

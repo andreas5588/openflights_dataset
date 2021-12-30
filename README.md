@@ -46,7 +46,7 @@ Each row represents a high-level administrative subdivision of a country. The is
 * routes.dat (66.392 of 67.663 rows loaded)
 * runways.csv (42.929 of  rows 42.932 loaded)
 
-![all tables and row counts](/doc/openflights.png)
+![all tables and row counts](/doc/datamodel.png)
 
 ## Installation
 
