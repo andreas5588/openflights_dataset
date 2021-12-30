@@ -6,7 +6,7 @@ You find here a flight datamodel for the Database InterSystems IRIS. This model 
 ## InterSystems IRIS - LOAD DATA 
 To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2021.2.0.617 (preview) is used. Details about the new SQL command canbe found here: https://docs.intersystems.com/iris20212/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
 
-## Datasets
+## Contained data
 Dataset formats: https://openflights.org/data.html#airline
 
 * airlines.dat 
@@ -34,25 +34,38 @@ Each row in this dataset represents a single radio navigation. When the navaid i
 * regions.csv 
 Each row represents a high-level administrative subdivision of a country. The iso_region column in airports.csv links to the code column in this dataset. 
 
+## State of loading
+
+* airlines.dat (6.162 of 6.162 rows loaded)
+* airport_freq.csv (28.074 of 28.969 rows loaded)
+* airports.csv (69.197 of 69.197 rows loaded) 
+* countries.csv (247 of 247 rows loaded)
+* navaids.csv (11.020 of 11.020 rows loaded)
+* planes.dat (246 of 246 rows loaded)
+* regions.csv (3.964 of 3.964 rows loaded)
+* routes.dat (66.392 of 67.663 rows loaded)
+* runways.csv (42.929 of  rows 42.932 loaded)
 
 ![all tables and row counts](/doc/openflights.png)
 
+## Installation
+
+Iin order to prevent problems with the data encoding when loading, please make the following setting on the %Java Server: -Dfile.encoding=UTF-8
+See the screenshots for details:
+![%Java Server Settings](/doc/change_jvm_param_for_javaserver.png)
+![%Java Server Param](/doc/change_jvm_param_for_javaserver_file_encoding.png)
+
 ## Data sources
-Raw data used to compute flight route geometries:
 
-#### Airports
-http://ourairports.com/data/
+* Airports http://ourairports.com/data/
+* Routes http://openflights.org/data.html
+* Airport total passengers
+** http://www.aci.aero/
+** http://en.wikipedia.org/wiki/List_of_the_world%27s_busiest_airports_by_passenger_traffic#2014_statistics
 
-#### Routes
-http://openflights.org/data.html
-
-#### Airport total passengers
-http://www.aci.aero/
-http://en.wikipedia.org/wiki/List_of_the_world%27s_busiest_airports_by_passenger_traffic#2014_statistics
 
 ## repos
 https://github.com/jpatokal/openflights
-https://github.com/jpatokal/openflights/blob/master/sql/create.sql
 https://openflights.org/data.html#airline
 
 ## Docker
@@ -61,12 +74,13 @@ Some docker notes
 docker cp <src-path> <container>:<dest-path> ... 
 docker cp <container>:<src-path> <local-dest-path>
 
+
 * docker cp D:\dev\openflights_dataset\data\airlines.dat my-iris:/usr/airlines.dat
+* docker cp D:\dev\openflights_dataset\data\airport_freq.csv my-iris:/usr/airport_freq.csv
 * docker cp D:\dev\openflights_dataset\data\airports.csv my-iris:/usr/airports.csv
 * docker cp D:\dev\openflights_dataset\data\countries.csv my-iris:/usr/countries.csv
-* docker cp D:\dev\openflights_dataset\data\airport_freq.csv my-iris:/usr/airport_freq.csv
-* docker cp D:\dev\openflights_dataset\data\regions.csv my-iris:/usr/regions.csv
-* docker cp D:\dev\openflights_dataset\data\runways.csv my-iris:/usr/runways.csv
 * docker cp D:\dev\openflights_dataset\data\navaids.csv my-iris:/usr/navaids.csv
 * docker cp D:\dev\openflights_dataset\data\planes.dat my-iris:/usr/planes.dat
+* docker cp D:\dev\openflights_dataset\data\regions.csv my-iris:/usr/regions.csv
 * docker cp D:\dev\openflights_dataset\data\routes.dat my-iris:/usr/routes.dat
+* docker cp D:\dev\openflights_dataset\data\runways.csv my-iris:/usr/runways.csv
