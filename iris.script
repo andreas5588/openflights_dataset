@@ -1,0 +1,9 @@
+zn "%SYS"
+
+DO $SYSTEM.SQL.Schema.ImportDDL("/opt/irisbuild/ddl/01_create_db.sql","/opt/irisbuild/01_ddl_errors.log","IRIS")
+
+zn "openflights"
+
+DO $SYSTEM.SQL.Schema.ImportDDL("/opt/irisbuild/ddl/02_create_db_model.sql","/opt/irisbuild/02_ddl_errors.log","IRIS")
+
+halt

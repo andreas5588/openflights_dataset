@@ -4,19 +4,16 @@ Openflights dataset, datamodel for InterSystems IRIS
 You find here a flight datamodel for the Database InterSystems IRIS. This model is inspired by https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021
 
 ## InterSystems IRIS - LOAD DATA 
-To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2021.2.0.617 (preview) is used. Details about the new SQL command canbe found here: https://docs.intersystems.com/iris20212/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
+To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2021.2.0.617 (preview) is used. Details about the new SQL command can be found here: https://docs.intersystems.com/iris20212/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
 
 ## Contained data
 Dataset formats: https://openflights.org/data.html#airline
 
-* airlines.dat 
-containing information on airlines
+* airlines.dat Contais information on airlines
 
-* routes.dat 
-Route file contains routes between airports on airlines spanning the globe
+* routes.dat Route file contains routes between airports on airlines spanning the globe
 
-* planes.dat 
-The OpenFlights plane file contains a curated selection of 173 passenger aircraft with IATA and/or ICAO codes, covering the vast majority of flights operated today and commonly used in flight schedules and reservation systems.
+* planes.dat The OpenFlights plane file contains a curated selection of 173 passenger aircraft with IATA and/or ICAO codes, covering the vast majority of flights operated today and commonly used in flight schedules and reservation systems.
 
 Dataset formats: https://ourairports.com/help/data-dictionary.html
 
@@ -52,9 +49,30 @@ FKs are not all set... stay tune
 
 ![all tables and row counts](/doc/datamodel.png)
 
+Prerequisites
+
+Make sure you have git and Docker desktop installed.
+
 ## Installation
 
-Iin order to prevent problems with the data encoding when loading, please make the following setting on the %Java Server: -Dfile.encoding=UTF-8
+To start working with this datamodel do the following:
+
+Clone/git pull the repo into any local directory
+
+git clone https://github.com/andreas5588/openflights_dataset.git
+
+Open the console in this directory and run:
+
+docker-compose build
+
+By default the Container ports 1972; 52773; 53773 are mapped to the same local ports. Please check the availability of the ports on your maschine first.
+
+Run the iris-openflight container with the datamodel:
+
+docker-compose up -d
+
+
+In order to prevent problems with the data encoding when loading, please make the following setting on the %Java Server: -Dfile.encoding=UTF-8
 See the screenshots for details:
 ![%Java Server Settings](/doc/change_jvm_param_for_javaserver.png)
 ![%Java Server Param](/doc/change_jvm_param_for_javaserver_file_encoding.png)
