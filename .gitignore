@@ -1,1 +1,3 @@
 .iris_logs
+.vscode
+*.log

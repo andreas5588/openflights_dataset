@@ -1,9 +1,15 @@
-zn "%SYS"
+; this loads the class into USER namespace
+do $SYSTEM.OBJ.Load("/opt/irisbuild/src/cls/Utils.cls", "ck")
 
-DO $SYSTEM.SQL.Schema.ImportDDL("/opt/irisbuild/ddl/01_create_db.sql","/opt/irisbuild/01_ddl_errors.log","IRIS")
+DO $SYSTEM.SQL.Schema.ImportDDL("/opt/irisbuild/src/ddl/01_create_db.sql","/opt/irisbuild/01_ddl_errors.log","IRIS")
 
-zn "openflights"
+; this create the openflights namespace
+;Do ##class(Openflights.Utils).RunDDL("/opt/irisbuild/src/ddl/01_create_db.sql",,0,1)
 
-DO $SYSTEM.SQL.Schema.ImportDDL("/opt/irisbuild/ddl/02_create_db_model.sql","/opt/irisbuild/02_ddl_errors.log","IRIS")
+; this doesnt't work cause LOAD DATA is not supported
+;DO $SYSTEM.SQL.Schema.ImportDDL("/opt/irisbuild/src/ddl/02_create_db_model.sql","/opt/irisbuild/02_ddl_errors.log","IRIS")
+
+; execute the ddl statemens - the first statement in the file is the USE DATABASE openflights
+Do ##class(Openflights.Utils).RunDDL("/opt/irisbuild/src/ddl/02_create_db_model.sql",,0,1)
 
 halt

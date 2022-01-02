@@ -1,0 +1,15 @@
+Some docker notes
+
+docker cp : ... docker cp :
+
+    docker cp D:\dev\openflights_dataset\data\airlines.dat my-iris:/usr/airlines.dat
+    docker cp D:\dev\openflights_dataset\data\airport_freq.csv my-iris:/usr/airport_freq.csv
+    docker cp D:\dev\openflights_dataset\data\airports.csv my-iris:/usr/airports.csv
+    docker cp D:\dev\openflights_dataset\data\countries.csv my-iris:/usr/countries.csv
+    docker cp D:\dev\openflights_dataset\data\navaids.csv my-iris:/usr/navaids.csv
+    docker cp D:\dev\openflights_dataset\data\planes.dat my-iris:/usr/planes.dat
+    docker cp D:\dev\openflights_dataset\data\regions.csv my-iris:/usr/regions.csv
+    docker cp D:\dev\openflights_dataset\data\routes.dat my-iris:/usr/routes.dat
+    docker cp D:\dev\openflights_dataset\data\runways.csv my-iris:/usr/runways.csv
+
+--no-cache

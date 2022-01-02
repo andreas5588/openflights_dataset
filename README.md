@@ -1,21 +1,22 @@
 # Openflights demo dataset
-Openflights dataset, datamodel for InterSystems IRIS
-
-You find here a flight datamodel for the Database InterSystems IRIS. This model is inspired by https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021
-
-## InterSystems IRIS - LOAD DATA 
+This a demo dataset, datamodel for InterSystems IRIS. This model was build for the IRIS Dataset contest: https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021
+The data used by this datamodel are based on datasets from ourairports.com and openflights.org 
 To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2021.2.0.617 (preview) is used. Details about the new SQL command can be found here: https://docs.intersystems.com/iris20212/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
 
-## Contained data
-Dataset formats: https://openflights.org/data.html#airline
+With this example project you have at least two use cases: 
+    See and evaluate the using of LOAD DATA 
+    or 
+    just explore the openflights datamodel with SQL
 
+## Data in this model
+
+### data from: https://openflights.org/data.html#airline
+The "dat"-files are from https://openflights.org/data.html This files are simple text files
 * airlines.dat Contais information on airlines
-
 * routes.dat Route file contains routes between airports on airlines spanning the globe
-
 * planes.dat The OpenFlights plane file contains a curated selection of 173 passenger aircraft with IATA and/or ICAO codes, covering the vast majority of flights operated today and commonly used in flight schedules and reservation systems.
 
-Dataset formats: https://ourairports.com/help/data-dictionary.html
+### data from: https://ourairports.com/help/data-dictionary.html
 
 * airports.csv 
 Each row in this dataset represents the record for a single airport. The primary key for interoperability purposes with other datasets is ident, but the actual internal OurAirports primary key is id. iso_region is a foreign key into the regions.csv download file. 
@@ -34,22 +35,24 @@ Each row represents a high-level administrative subdivision of a country. The is
 ## State of loading
 
 * :heavy_check_mark: airlines.dat (6.162 of 6.162 rows loaded)
-* airport_freq.csv (28.074 of 28.969 rows loaded)
+* :heavy_check_mark: airport_freq.csv (28.969 of 28.969 rows loaded)
 * :heavy_check_mark: airports.csv (69.197 of 69.197 rows loaded) 
 * :heavy_check_mark: countries.csv (247 of 247 rows loaded)
 * :heavy_check_mark: navaids.csv (11.020 of 11.020 rows loaded)
 * :heavy_check_mark: planes.dat (246 of 246 rows loaded)
 * :heavy_check_mark: regions.csv (3.964 of 3.964 rows loaded)
-* routes.dat (66.392 of 67.663 rows loaded)
-* runways.csv (42.929 of  rows 42.932 loaded)
+* :heavy_check_mark: routes.dat (667.663 of 67.663 rows loaded)
+* :heavy_check_mark: runways.csv (42.932 of  rows 42.932 loaded)
 
-## datamodel
+You find the files above in the container in folder: /opt/irisbuild/data/
+
+## Visual representation of the data model
 
 FKs are not all set... stay tune
 
 ![all tables and row counts](/doc/datamodel.png)
 
-Prerequisites
+# Prerequisites
 
 Make sure you have git and Docker desktop installed.
 
@@ -57,20 +60,25 @@ Make sure you have git and Docker desktop installed.
 
 To start working with this datamodel do the following:
 
-Clone/git pull the repo into any local directory
+1. Clone/git pull the repo into any local directory
 
+```shell
 git clone https://github.com/andreas5588/openflights_dataset.git
+```
 
-Open the console in this directory and run:
+2. Open the console in this directory and run:
 
+```shell
 docker-compose build
+```
 
 By default the Container ports 1972; 52773; 53773 are mapped to the same local ports. Please check the availability of the ports on your maschine first.
 
-Run the iris-openflight container with the datamodel:
+3. Run the iris-openflight container with the datamodel:
 
+```shell
 docker-compose up -d
-
+```
 
 In order to prevent problems with the data encoding when loading, please make the following setting on the %Java Server: -Dfile.encoding=UTF-8
 See the screenshots for details:
@@ -86,23 +94,5 @@ See the screenshots for details:
 ** http://en.wikipedia.org/wiki/List_of_the_world%27s_busiest_airports_by_passenger_traffic#2014_statistics
 
 
-## repos
+## some git repos that work already with the openflights data
 https://github.com/jpatokal/openflights
-https://openflights.org/data.html#airline
-
-## Docker
-Some docker notes
-
-docker cp <src-path> <container>:<dest-path> ... 
-docker cp <container>:<src-path> <local-dest-path>
-
-
-* docker cp D:\dev\openflights_dataset\data\airlines.dat my-iris:/usr/airlines.dat
-* docker cp D:\dev\openflights_dataset\data\airport_freq.csv my-iris:/usr/airport_freq.csv
-* docker cp D:\dev\openflights_dataset\data\airports.csv my-iris:/usr/airports.csv
-* docker cp D:\dev\openflights_dataset\data\countries.csv my-iris:/usr/countries.csv
-* docker cp D:\dev\openflights_dataset\data\navaids.csv my-iris:/usr/navaids.csv
-* docker cp D:\dev\openflights_dataset\data\planes.dat my-iris:/usr/planes.dat
-* docker cp D:\dev\openflights_dataset\data\regions.csv my-iris:/usr/regions.csv
-* docker cp D:\dev\openflights_dataset\data\routes.dat my-iris:/usr/routes.dat
-* docker cp D:\dev\openflights_dataset\data\runways.csv my-iris:/usr/runways.csv

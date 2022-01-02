@@ -8,7 +8,7 @@ RUN chown ${ISC_PACKAGE_MGRUSER}:${ISC_PACKAGE_IRISGROUP} /opt/irisbuild
 USER ${ISC_PACKAGE_MGRUSER}
 
 COPY data data
-COPY ddl ddl
+COPY src src
 COPY iris.script iris.script
 
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache

@@ -1,4 +1,5 @@
---USE DATABASE openflights
+USE DATABASE openflights
+GO
 CREATE TABLE flights.airlines 
 (
 	%DESCRIPTION 'Contains information obout airlines. Data Source: https://openflights.org/data.html',
@@ -48,6 +49,39 @@ VALUES
 	active
 )
 USING {"from": {"file": {"header":"0","columnseparator":","} }}
+GO
+CREATE TABLE flights.airport_freq 
+(
+  %DESCRIPTION 'Each row in this table represents a single airport radio frequency for voice communication (radio navigation aids appear in table navaids). The column airport_ident is a foreign key referencing the ident column in table airports for the associated airport. Data Source: https://ourairports.com/help/data-dictionary.html',
+  id int NOT NULL  					%DESCRIPTION 'Internal OurAirports integer identifier for the frequency. This will stay persistent, even if the radio frequency or description changes',
+  airport_id int NOT NULL 			%DESCRIPTION 'Internal integer foreign key matching the id column for the associated airport in airports (airport_ident is a better alternative.)',
+  airport_ident varchar(8) NOT NULL %DESCRIPTION 'Externally-visible string foreign key matching the ident column for the associated airport in airports',
+  type varchar(25) NOT NULL 		%DESCRIPTION 'A code for the frequency type. This isnt (currently) a controlled vocabulary, but probably will be soon. Some common values are "TWR" (tower), "ATF" or "CTAF" (common traffic frequency), "GND" (ground control), "RMP" (ramp control), "ATIS" (automated weather), "RCO" (remote radio outlet), "ARR" (arrivals), "DEP" (departures), "UNICOM" (monitored ground station), and "RDO" (a flight-service station).',
+  description varchar(255) NOT NULL	%DESCRIPTION 'A description of the frequency, typically the way a pilot would open a call on it',
+  frequency_mhz DOUBLE  NOT NULL 	%DESCRIPTION 'Radio voice frequency in megahertz. Note that the same frequency may appear multiple times for an airport, serving different functions.',
+  CONSTRAINT id_pk PRIMARY KEY (id)
+)
+GO
+LOAD DATA FROM FILE '/opt/irisbuild/data/airport_freq.csv' 
+INTO flights.airport_freq
+(
+  id,
+  airport_id,
+  airport_ident,
+  type,
+  description,
+  frequency_mhz
+) 
+VALUES 
+(
+  id,
+  airport_ref,
+  airport_ident,
+  type,
+  description,
+  frequency_mhz
+)
+USING {"from": {"file": {"header":"1","columnseparator":","} }}
 GO
 CREATE TABLE flights.airports 
 (
@@ -148,155 +182,6 @@ VALUES
 	continent,
 	wikipedia_link,
 	keywords
-)
-USING {"from": {"file": {"header":"1","columnseparator":","} }}
-GO
-CREATE TABLE flights.airport_freq 
-(
-  %DESCRIPTION 'Each row in this table represents a single airport radio frequency for voice communication (radio navigation aids appear in table navaids). The column airport_ident is a foreign key referencing the ident column in table airports for the associated airport. Data Source: https://ourairports.com/help/data-dictionary.html',
-  id int NOT NULL  					%DESCRIPTION 'Internal OurAirports integer identifier for the frequency. This will stay persistent, even if the radio frequency or description changes',
-  airport_id int NOT NULL 			%DESCRIPTION 'Internal integer foreign key matching the id column for the associated airport in airports (airport_ident is a better alternative.)',
-  airport_ident varchar(8) NOT NULL %DESCRIPTION 'Externally-visible string foreign key matching the ident column for the associated airport in airports',
-  type varchar(25) NOT NULL 		%DESCRIPTION 'A code for the frequency type. This isnt (currently) a controlled vocabulary, but probably will be soon. Some common values are "TWR" (tower), "ATF" or "CTAF" (common traffic frequency), "GND" (ground control), "RMP" (ramp control), "ATIS" (automated weather), "RCO" (remote radio outlet), "ARR" (arrivals), "DEP" (departures), "UNICOM" (monitored ground station), and "RDO" (a flight-service station).',
-  description varchar(255) NOT NULL	%DESCRIPTION 'A description of the frequency, typically the way a pilot would open a call on it',
-  frequency_mhz DOUBLE  NOT NULL 	%DESCRIPTION 'Radio voice frequency in megahertz. Note that the same frequency may appear multiple times for an airport, serving different functions.',
-  CONSTRAINT id_pk PRIMARY KEY (id)
-)
-GO
-LOAD DATA FROM FILE '/opt/irisbuild/data/airport_freq.csv' 
-INTO flights.airport_freq
-(
-  id,
-  airport_id,
-  airport_ident,
-  type,
-  description,
-  frequency_mhz
-) 
-VALUES 
-(
-  id,
-  airport_ref,
-  airport_ident,
-  type,
-  description,
-  frequency_mhz
-)
-USING {"from": {"file": {"header":"1","columnseparator":","} }}
-GO
-CREATE TABLE flights.regions 
-(
-  %DESCRIPTION 'Each row represents a high-level administrative subdivision of a country. The iso_region column in airports to the code column in this table. Data Source: https://ourairports.com/help/data-dictionary.html',
-  id 				INT NOT NULL 				%DESCRIPTION 'Internal OurAirports integer identifier for the region. This will stay persistent, even if the region code changes.',
-  code 				VARCHAR(8) NOT NULL UNIQUE 	%DESCRIPTION 'local_code prefixed with the country code to make a globally-unique identifier. ',
-  local_code 		VARCHAR(4) NOT NULL 		%DESCRIPTION 'The local code for the administrative subdivision. Whenever possible, these are official ISO 3166:2, at the highest level available, but in some cases OurAirports has to use unofficial codes. There is also a pseudo code "U-A" for each country, which means that the airport has not yet been assigned to a region (or perhaps cant be, as in the case of a deep-sea oil platform).',
-  name 				VARCHAR(255) NOT NULL 		%DESCRIPTION 'The common English-language name for the administrative subdivision. In some cases, the name in local languages will appear in the keywords field assist search.',
-  continent 		CHAR(2) NOT NULL 			%DESCRIPTION 'A code for the continent to which the region belongs. See the continent field in airports for a list of codes.',
-  iso_country 		CHAR(2) NOT NULL 			%DESCRIPTION 'The two-character ISO 3166:1-alpha2 code for the country containing the administrative subdivision. A handful of unofficial, non-ISO codes are also in use, such as "XK" for Kosovo.',
-  wikipedia_link 	VARCHAR(1024) 				%DESCRIPTION 'A link to the Wikipedia article describing the subdivision',
-  keywords 			VARCHAR(1024) 				%DESCRIPTION 'A comma-separated list of keywords to assist with search. May include former names for the region, and/or the region name in other languages.',
-  CONSTRAINT id_pk PRIMARY KEY (id)
-)
-GO
-LOAD DATA FROM FILE '/opt/irisbuild/data/regions.csv' 
-INTO flights.regions
-(
-  id,
-  code,
-  local_code,
-  name,
-  continent,
-  iso_country,
-  wikipedia_link,
-  keywords
-) 
-VALUES 
-(
-  id,
-  code,
-  local_code,
-  name,
-  continent,
-  iso_country,
-  wikipedia_link,
-  keywords
-)
-USING {"from": {"file": {"header":"1","columnseparator":","} }}
-GO
-CREATE TABLE flights.runways 
-(
-	%DESCRIPTION 'Each row in this dataset represents a single airport landing surface (runway, helipad, or waterway). The initial fields apply to the entire surface, in both directions. Fields beginning with le_* apply only to the low-numbered end of the runway (e.g. 09), while fields beginning with he_* apply only to the high-numbered end of the runway (e.g. 27). Data Source: https://ourairports.com/help/data-dictionary.html',
-	id            				INT NOT NULL 		%DESCRIPTION 'Internal OurAirports integer identifier for the runway. This will stay persistent, even if the runway numbering changes',
-	airport_id    				INT NOT NULL 		%DESCRIPTION 'Internal integer foreign key matching the id column for the associated airport in airports.csv. (airport_ident is a better alternative.)',
-	airport_ident 				VARCHAR(8) NOT NULL %DESCRIPTION 'Externally-visible string foreign key matching the ident column for the associated airport in airports',
-	length_ft     				INT 				%DESCRIPTION 'Length of the full runway surface (including displaced thresholds, overrun areas, etc) in feet.',
-	width_ft      				INT 				%DESCRIPTION 'Width of the runway surface in feet.',
-	surface       				VARCHAR(255)  		%DESCRIPTION 'Code for the runway surface type. This is not yet a controlled vocabulary, but probably will be soon. Some common values include "ASP" (asphalt), "TURF" (turf), "CON" (concrete), "GRS" (grass), "GRE" (gravel), "WATER" (water), and "UNK" (unknown).',
-	lighted       				BIT 				%DESCRIPTION '1 if the surface is lighted at night, 0 otherwise. (Note that this is inconsistent with airports.csv, which uses "yes" and "no" instead of 1 and 0.) ',
-	closed        				BIT 				%DESCRIPTION '1 if the runway surface is currently closed, 0 otherwise',
-	le_ident      				VARCHAR(6) 			%DESCRIPTION 'Identifier for the low-numbered end of the runway.',
-	le_latitude_deg 			DOUBLE 				%DESCRIPTION 'Latitude of the centre of the low-numbered end of the runway, in decimal degrees (positive is north), if available. ',
-	le_longitude_deg 			DOUBLE 				%DESCRIPTION 'Longitude of the centre of the low-numbered end of the runway, in decimal degrees (positive is east), if available. ',
-	le_location   				DOUBLE 				%DESCRIPTION '',
-	le_elevation_ft 			INT 				%DESCRIPTION 'Elevation above MSL of the low-numbered end of the runway in feet.',
-	le_heading_degt 			DOUBLE 				%DESCRIPTION 'Heading of the low-numbered end of the runway in degrees true (not magnetic).',
-	le_displaced_threshold_ft 	INT 				%DESCRIPTION 'Length of the displaced threshold (if any) for the low-numbered end of the runway, in feet.',
-	he_ident      				VARCHAR(6) 			%DESCRIPTION 'Identifier for the high-numbered end of the runway.',
-	he_latitude_deg 			DOUBLE 				%DESCRIPTION 'Latitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is north), if available.',
-	he_longitude_deg 			DOUBLE 				%DESCRIPTION 'Longitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is east), if available',
-	he_location   				DOUBLE 				%DESCRIPTION '',
-	he_elevation_ft 			INT 				%DESCRIPTION 'Longitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is east), if available',
-	he_heading_degt 			DOUBLE 				%DESCRIPTION 'Heading of the high-numbered end of the runway in degrees true (not magnetic)',
-	he_displaced_threshold_ft 	INT 				%DESCRIPTION 'Length of the displaced threshold (if any) for the high-numbered end of the runway, in feet',
-	CONSTRAINT id_pk PRIMARY KEY (id)
-)
-GO
-LOAD DATA FROM FILE '/opt/irisbuild/data/runways.csv' 
-INTO flights.runways
-(
-	id,
-	airport_id,
-	airport_ident,
-	length_ft,
-	width_ft,
-	surface,
-	lighted,
-	closed,
-	le_ident,
-	le_latitude_deg,
-	le_longitude_deg,
-	le_elevation_ft,
-	le_heading_degT,
-	le_displaced_threshold_ft,
-	he_ident,
-	he_latitude_deg,
-	he_longitude_deg,
-	he_elevation_ft,
-	he_heading_degT,
-	he_displaced_threshold_ft
-) 
-VALUES 
-(
-	id,
-	airport_ref,
-	airport_ident,
-	length_ft,
-	width_ft,
-	surface,
-	lighted,
-	closed,
-	le_ident,
-	le_latitude_deg,
-	le_longitude_deg,
-	le_elevation_ft,
-	le_heading_degT,
-	le_displaced_threshold_ft,
-	he_ident,
-	he_latitude_deg,
-	he_longitude_deg,
-	he_elevation_ft,
-	he_heading_degT,
-	he_displaced_threshold_ft
 )
 USING {"from": {"file": {"header":"1","columnseparator":","} }}
 GO
@@ -406,6 +291,45 @@ VALUES
 )
 USING {"from": {"file": {"header":"0","columnseparator":","} }}
 GO
+CREATE TABLE flights.regions 
+(
+  %DESCRIPTION 'Each row represents a high-level administrative subdivision of a country. The iso_region column in airports to the code column in this table. Data Source: https://ourairports.com/help/data-dictionary.html',
+  id 				INT NOT NULL 				%DESCRIPTION 'Internal OurAirports integer identifier for the region. This will stay persistent, even if the region code changes.',
+  code 				VARCHAR(8) NOT NULL UNIQUE 	%DESCRIPTION 'local_code prefixed with the country code to make a globally-unique identifier. ',
+  local_code 		VARCHAR(4) NOT NULL 		%DESCRIPTION 'The local code for the administrative subdivision. Whenever possible, these are official ISO 3166:2, at the highest level available, but in some cases OurAirports has to use unofficial codes. There is also a pseudo code "U-A" for each country, which means that the airport has not yet been assigned to a region (or perhaps cant be, as in the case of a deep-sea oil platform).',
+  name 				VARCHAR(255) NOT NULL 		%DESCRIPTION 'The common English-language name for the administrative subdivision. In some cases, the name in local languages will appear in the keywords field assist search.',
+  continent 		CHAR(2) NOT NULL 			%DESCRIPTION 'A code for the continent to which the region belongs. See the continent field in airports for a list of codes.',
+  iso_country 		CHAR(2) NOT NULL 			%DESCRIPTION 'The two-character ISO 3166:1-alpha2 code for the country containing the administrative subdivision. A handful of unofficial, non-ISO codes are also in use, such as "XK" for Kosovo.',
+  wikipedia_link 	VARCHAR(1024) 				%DESCRIPTION 'A link to the Wikipedia article describing the subdivision',
+  keywords 			VARCHAR(1024) 				%DESCRIPTION 'A comma-separated list of keywords to assist with search. May include former names for the region, and/or the region name in other languages.',
+  CONSTRAINT id_pk PRIMARY KEY (id)
+)
+GO
+LOAD DATA FROM FILE '/opt/irisbuild/data/regions.csv' 
+INTO flights.regions
+(
+  id,
+  code,
+  local_code,
+  name,
+  continent,
+  iso_country,
+  wikipedia_link,
+  keywords
+) 
+VALUES 
+(
+  id,
+  code,
+  local_code,
+  name,
+  continent,
+  iso_country,
+  wikipedia_link,
+  keywords
+)
+USING {"from": {"file": {"header":"1","columnseparator":","} }}
+GO
 CREATE TABLE flights.routes 
 (
 	%DESCRIPTION 'Contains routes between airports and airlines spanning the globe. Data Source: https://openflights.org/data.html',
@@ -458,3 +382,81 @@ VALUES
   equipment
 )
 USING {"from": {"file": {"header":"0","columnseparator":","} }}
+GO
+CREATE TABLE flights.runways 
+(
+	%DESCRIPTION 'Each row in this dataset represents a single airport landing surface (runway, helipad, or waterway). The initial fields apply to the entire surface, in both directions. Fields beginning with le_* apply only to the low-numbered end of the runway (e.g. 09), while fields beginning with he_* apply only to the high-numbered end of the runway (e.g. 27). Data Source: https://ourairports.com/help/data-dictionary.html',
+	id            				INT NOT NULL 		%DESCRIPTION 'Internal OurAirports integer identifier for the runway. This will stay persistent, even if the runway numbering changes',
+	airport_id    				INT NOT NULL 		%DESCRIPTION 'Internal integer foreign key matching the id column for the associated airport in airports.csv. (airport_ident is a better alternative.)',
+	airport_ident 				VARCHAR(8) NOT NULL %DESCRIPTION 'Externally-visible string foreign key matching the ident column for the associated airport in airports',
+	length_ft     				INT 				%DESCRIPTION 'Length of the full runway surface (including displaced thresholds, overrun areas, etc) in feet.',
+	width_ft      				INT 				%DESCRIPTION 'Width of the runway surface in feet.',
+	surface       				VARCHAR(255)  		%DESCRIPTION 'Code for the runway surface type. This is not yet a controlled vocabulary, but probably will be soon. Some common values include "ASP" (asphalt), "TURF" (turf), "CON" (concrete), "GRS" (grass), "GRE" (gravel), "WATER" (water), and "UNK" (unknown).',
+	lighted       				BIT 				%DESCRIPTION '1 if the surface is lighted at night, 0 otherwise. (Note that this is inconsistent with airports.csv, which uses "yes" and "no" instead of 1 and 0.) ',
+	closed        				BIT 				%DESCRIPTION '1 if the runway surface is currently closed, 0 otherwise',
+	le_ident      				VARCHAR(6) 			%DESCRIPTION 'Identifier for the low-numbered end of the runway.',
+	le_latitude_deg 			DOUBLE 				%DESCRIPTION 'Latitude of the centre of the low-numbered end of the runway, in decimal degrees (positive is north), if available. ',
+	le_longitude_deg 			DOUBLE 				%DESCRIPTION 'Longitude of the centre of the low-numbered end of the runway, in decimal degrees (positive is east), if available. ',
+	le_location   				DOUBLE 				%DESCRIPTION '',
+	le_elevation_ft 			INT 				%DESCRIPTION 'Elevation above MSL of the low-numbered end of the runway in feet.',
+	le_heading_degt 			DOUBLE 				%DESCRIPTION 'Heading of the low-numbered end of the runway in degrees true (not magnetic).',
+	le_displaced_threshold_ft 	INT 				%DESCRIPTION 'Length of the displaced threshold (if any) for the low-numbered end of the runway, in feet.',
+	he_ident      				VARCHAR(6) 			%DESCRIPTION 'Identifier for the high-numbered end of the runway.',
+	he_latitude_deg 			DOUBLE 				%DESCRIPTION 'Latitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is north), if available.',
+	he_longitude_deg 			DOUBLE 				%DESCRIPTION 'Longitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is east), if available',
+	he_location   				DOUBLE 				%DESCRIPTION '',
+	he_elevation_ft 			INT 				%DESCRIPTION 'Longitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is east), if available',
+	he_heading_degt 			DOUBLE 				%DESCRIPTION 'Heading of the high-numbered end of the runway in degrees true (not magnetic)',
+	he_displaced_threshold_ft 	INT 				%DESCRIPTION 'Length of the displaced threshold (if any) for the high-numbered end of the runway, in feet',
+	CONSTRAINT id_pk PRIMARY KEY (id)
+)
+GO
+LOAD DATA FROM FILE '/opt/irisbuild/data/runways.csv' 
+INTO flights.runways
+(
+	id,
+	airport_id,
+	airport_ident,
+	length_ft,
+	width_ft,
+	surface,
+	lighted,
+	closed,
+	le_ident,
+	le_latitude_deg,
+	le_longitude_deg,
+	le_elevation_ft,
+	le_heading_degT,
+	le_displaced_threshold_ft,
+	he_ident,
+	he_latitude_deg,
+	he_longitude_deg,
+	he_elevation_ft,
+	he_heading_degT,
+	he_displaced_threshold_ft
+) 
+VALUES 
+(
+	id,
+	airport_ref,
+	airport_ident,
+	length_ft,
+	width_ft,
+	surface,
+	lighted,
+	closed,
+	le_ident,
+	le_latitude_deg,
+	le_longitude_deg,
+	le_elevation_ft,
+	le_heading_degT,
+	le_displaced_threshold_ft,
+	he_ident,
+	he_latitude_deg,
+	he_longitude_deg,
+	he_elevation_ft,
+	he_heading_degT,
+	he_displaced_threshold_ft
+)
+USING {"from": {"file": {"header":"1","columnseparator":","} }}
+GO
