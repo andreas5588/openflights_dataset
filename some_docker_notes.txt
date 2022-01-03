@@ -13,3 +13,13 @@ docker cp : ... docker cp :
     docker cp D:\dev\openflights_dataset\data\runways.csv my-iris:/usr/runways.csv
 
 --no-cache
+docker-compose build
+docker-compose up -d 
+docker-compose down
+
+docker-compose exec iris iris session iris
+
+write $system.external.getServer("%Java Server").%ToJSON()
+
+set srv = $system.external.getServer("%Java Server")
+set srv.JVMArgs = "-Dfile.encoding=UTF-8"

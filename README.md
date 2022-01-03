@@ -1,6 +1,5 @@
 # Openflights demo dataset
-This a demo dataset, datamodel for InterSystems IRIS. This model was build for the IRIS Dataset contest: https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021
-The data used by this datamodel are based on datasets from ourairports.com and openflights.org 
+This a demo dataset, datamodel for InterSystems IRIS. This model was build for the IRIS Dataset contest: https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021 The data used by this datamodel are based on datasets from ourairports.com and openflights.org 
 To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2021.2.0.617 (preview) is used. Details about the new SQL command can be found here: https://docs.intersystems.com/iris20212/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
 
 With this example project you have at least two use cases: 
@@ -11,7 +10,7 @@ With this example project you have at least two use cases:
 ## Data in this model
 
 ### data from: https://openflights.org/data.html#airline
-The "dat"-files are from https://openflights.org/data.html This files are simple text files
+The "dat"-files are simple text files
 * airlines.dat Contais information on airlines
 * routes.dat Route file contains routes between airports on airlines spanning the globe
 * planes.dat The OpenFlights plane file contains a curated selection of 173 passenger aircraft with IATA and/or ICAO codes, covering the vast majority of flights operated today and commonly used in flight schedules and reservation systems.
