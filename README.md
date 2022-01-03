@@ -47,7 +47,8 @@ You find the files above in the container in folder: /opt/irisbuild/data/
 
 ## Visual representation of the data model
 
-FKs are not all set... stay tune
+FKs are not all set... cause of data inconsistencies, indices are still missing
+... stay tune
 
 ![all tables and row counts](/doc/datamodel.png)
 
@@ -88,5 +89,5 @@ docker-compose up -d
 ** http://en.wikipedia.org/wiki/List_of_the_world%27s_busiest_airports_by_passenger_traffic#2014_statistics
 
 
-## some git repos that work already with the openflights data
+## a git repos that work already with the openflights data
 https://github.com/jpatokal/openflights

@@ -87,7 +87,7 @@ CREATE TABLE dc_data_flights.airports
 (
 	%DESCRIPTION 'airports spanning the globe. Data Source: https://ourairports.com/help/data-dictionary.html',
 	id 					INT NOT NULL 				%DESCRIPTION 'Internal OurAirports integer identifier for the airport. This will stay persistent, even if the airport code changes',
-	ident 				VARCHAR(8) NOT NULL UNIQUE  %DESCRIPTION 'The text identifier used in the OurAirports URL. This will be the ICAO code if available. Otherwise, it will be a local airport code (if no conflict), or if nothing else is available, an internally-generated code starting with the ISO2 country code, followed by a dash and a four-digit number',
+	ident 				VARCHAR(7) NOT NULL UNIQUE  %DESCRIPTION 'The text identifier used in the OurAirports URL. This will be the ICAO code if available. Otherwise, it will be a local airport code (if no conflict), or if nothing else is available, an internally-generated code starting with the ISO2 country code, followed by a dash and a four-digit number',
 	type 				VARCHAR(25) NOT NULL		%DESCRIPTION 'The type of the airport. Allowed values are closed_airport, heliport, large_airport, medium_airport, seaplane_base, and small_airport. See the map legend for a definition of each type',
 	name 				VARCHAR(255)        		%DESCRIPTION 'The official airport name, including Airport, Airstrip, etc',
 	latitude_deg 		DOUBLE              		%DESCRIPTION 'The airport latitude in decimal degrees (positive for north)',
@@ -95,13 +95,13 @@ CREATE TABLE dc_data_flights.airports
 	elevation_ft 		INT                 		%DESCRIPTION 'The airport elevation MSL in feet (not metres)',
 	continent 			VARCHAR(2)          		%DESCRIPTION 'The code for the continent where the airport is (primarily) located. Allowed values are AF (Africa), AN (Antarctica), AS (Asia), EU (Europe), NA (North America), OC (Oceania), or SA (South America)',
 	iso_country 		VARCHAR(2)          		%DESCRIPTION 'The two-character ISO 3166:1-alpha2 code for the country where the airport is (primarily) located. A handful of unofficial, non-ISO codes are also in use, such as "XK" for Kosovo',
-	iso_region 			VARCHAR(255)        		%DESCRIPTION 'An alphanumeric code for the high-level administrative subdivision of a country where the airport is primarily located (e.g. province, governorate), prefixed by the ISO2 country code and a hyphen. OurAirports uses ISO 3166:2 codes whenever possible, preferring higher administrative levels, but also includes some custom codes. See the documentation for regions.csv.',
+	iso_region 			VARCHAR(7)            		%DESCRIPTION 'An alphanumeric code for the high-level administrative subdivision of a country where the airport is primarily located (e.g. province, governorate), prefixed by the ISO2 country code and a hyphen. OurAirports uses ISO 3166:2 codes whenever possible, preferring higher administrative levels, but also includes some custom codes. See the documentation for regions.csv.',
 	municipality 		VARCHAR(255)        		%DESCRIPTION 'The primary municipality that the airport serves (when available). Note that this is not necessarily the municipality where the airport is physically located.',
 	scheduled_service 	BIT                 		%DESCRIPTION '"yes" if the airport currently has scheduled airline service; "no" otherwise',
 	gps_code       		VARCHAR(4)          		%DESCRIPTION 'The code that an aviation GPS database (such as Jeppesens or Garmins) would normally use for the airport. This will always be the ICAO code if one exists. Note that, unlike the ident column, this is not guaranteed to be globally unique',
 	iata_code      		VARCHAR(3)          		%DESCRIPTION 'The three-letter IATA code for the airport (if it has one)',
-	local_code     		VARCHAR(255)        		%DESCRIPTION 'The local country code for the airport, if different from the gps_code and iata_code fields (used mainly for US airports)',
-	home_link      		VARCHAR(255)        		%DESCRIPTION 'URL of the airports official home page on the web, if one exists',
+	local_code     		VARCHAR(7)           		%DESCRIPTION 'The local country code for the airport, if different from the gps_code and iata_code fields (used mainly for US airports)',
+	home_link      		VARCHAR(1024)        		%DESCRIPTION 'URL of the airports official home page on the web, if one exists',
 	wikipedia_link 		VARCHAR(1024)       		%DESCRIPTION 'URL of the airports page on Wikipedia, if one exists',
 	keywords       		VARCHAR(1024)       		%DESCRIPTION 'Extra keywords/phrases to assist with search, comma-separated. May include former names for the airport, alternate codes, names in other languages, nearby tourist destinations, etc. ',
 	CONSTRAINT id_pk PRIMARY KEY (id)
@@ -156,7 +156,7 @@ CREATE TABLE dc_data_flights.countries
 (
 	%DESCRIPTION 'Each row represents a country or country-like entity (e.g. Hong Kong). The iso_country column in airports, navaids, and regions refer to the code column here. Data Source: https://ourairports.com/help/data-dictionary.html',
 	id 				INT NOT NULL 			%DESCRIPTION 'Internal OurAirports integer identifier for the country. This will stay persistent, even if the country name or code changes.',
-	code 			CHAR(2) NOT NULL 		%DESCRIPTION 'The two-character ISO 3166:1-alpha2 code for the country. A handful of unofficial, non-ISO codes are also in use, such as "XK" for Kosovo. The iso_country field in airports.csv points into this column.',
+	code 			CHAR(2) NOT NULL UNIQUE	%DESCRIPTION 'The two-character ISO 3166:1-alpha2 code for the country. A handful of unofficial, non-ISO codes are also in use, such as "XK" for Kosovo. The iso_country field in airports.csv points into this column.',
 	name 			VARCHAR(255) NOT NULL 	%DESCRIPTION 'The common English-language name for the country. Other variations of the name may appear in the keywords field to assist with search.',
 	continent 		CHAR(2)  NOT NULL 		%DESCRIPTION 'The code for the continent where the country is (primarily) located. See the continent code in airports for allowed values. ',
 	wikipedia_link 	VARCHAR(1024)			%DESCRIPTION 'Link to the Wikipedia article about the country.',
@@ -190,7 +190,7 @@ CREATE TABLE dc_data_flights.navaids
 	  %DESCRIPTION 'Each row table represents a single radio navigation. When the navaid is associated with an airport, the associated_airport field links to the ident field in airports. Data Source: https://ourairports.com/help/data-dictionary.html',
 	  id            			INT NOT NULL 	%DESCRIPTION 'Internal OurAirports integer identifier for the navaid. This will stay persistent, even if the navaid identifier or frequency changes',
 	  filename      			VARCHAR(255) 	%DESCRIPTION 'This is a unique string identifier constructed from the navaid name and country, and used in the OurAirports URL',
-	  ident         			VARCHAR(255) 	%DESCRIPTION 'The 1-3 character identifer that the navaid transmits',
+	  ident         			VARCHAR(8) 	    %DESCRIPTION 'The 1-3 character identifer that the navaid transmits',
 	  name          			VARCHAR(255) 	%DESCRIPTION 'The name of the navaid, excluding its type.',
 	  type          			VARCHAR(8) 		%DESCRIPTION 'The type of the navaid. Options are "DME", "NDB", "NDB-DME", "TACAN", "VOR", "VOR-DME", or "VORTAC". See the map legend for more information about each type',
 	  frequency_khz 			INT 			%DESCRIPTION 'The frequency of the navaid in kilohertz. If the Navaid operates on the VHF band (VOR, VOR-DME) or operates on the UHF band with a paired VHF frequency (DME, TACAN, VORTAC), the you need to divide this number by 1,000 to get the frequency in megahertz (115.3 MHz in this example). For an NDB or NDB-DME, you can use this frequency directly. ',
@@ -208,7 +208,7 @@ CREATE TABLE dc_data_flights.navaids
 	  magnetic_variation_deg 	DOUBLE 			%DESCRIPTION 'The actual magnetic variation at the navaids location. Positive means east (added to the true direction), and negative means west (subtracted from the true direction).',
 	  usagetype     			VARCHAR(8)		%DESCRIPTION 'The primary function of the navaid in the airspace system. Options include "HI" (high-altitude airways, at or above flight level 180), "LO" (low-altitude airways), "BOTH" (high- and low-altitude airways), "TERM" (terminal-area navigation only), and "RNAV" (non-GPS area navigation)',
 	  power         			VARCHAR(8)		%DESCRIPTION 'The power-output level of the navaid. Options include "HIGH", "MEDIUM", "LOW", and "UNKNOWN".',
-	  associated_airport 		VARCHAR(8)		%DESCRIPTION 'The OurAirports text identifier (usually the ICAO code) for an airport associated with the navaid. Links to the ident column in airports',
+	  associated_airport 		VARCHAR(7)		%DESCRIPTION 'The OurAirports text identifier (usually the ICAO code) for an airport associated with the navaid. Links to the ident column in airports',
 	  CONSTRAINT id_pk PRIMARY KEY (id)
 )
 GO
@@ -295,7 +295,7 @@ CREATE TABLE dc_data_flights.regions
 (
   %DESCRIPTION 'Each row represents a high-level administrative subdivision of a country. The iso_region column in airports to the code column in this table. Data Source: https://ourairports.com/help/data-dictionary.html',
   id 				INT NOT NULL 				%DESCRIPTION 'Internal OurAirports integer identifier for the region. This will stay persistent, even if the region code changes.',
-  code 				VARCHAR(8) NOT NULL UNIQUE 	%DESCRIPTION 'local_code prefixed with the country code to make a globally-unique identifier. ',
+  code 				VARCHAR(7) NOT NULL UNIQUE 	%DESCRIPTION 'local_code prefixed with the country code to make a globally-unique identifier. ',
   local_code 		VARCHAR(4) NOT NULL 		%DESCRIPTION 'The local code for the administrative subdivision. Whenever possible, these are official ISO 3166:2, at the highest level available, but in some cases OurAirports has to use unofficial codes. There is also a pseudo code "U-A" for each country, which means that the airport has not yet been assigned to a region (or perhaps cant be, as in the case of a deep-sea oil platform).',
   name 				VARCHAR(255) NOT NULL 		%DESCRIPTION 'The common English-language name for the administrative subdivision. In some cases, the name in local languages will appear in the keywords field assist search.',
   continent 		CHAR(2) NOT NULL 			%DESCRIPTION 'A code for the continent to which the region belongs. See the continent field in airports for a list of codes.',
@@ -459,4 +459,60 @@ VALUES
 	he_displaced_threshold_ft
 )
 USING {"from": {"file": {"header":"1","columnseparator":","} }}
+GO
+TUNE TABLE dc_data_flights.airlines 
+GO
+TUNE TABLE dc_data_flights.airport_freq 
+GO
+TUNE TABLE dc_data_flights.airports 
+GO
+TUNE TABLE dc_data_flights.countries 
+GO
+TUNE TABLE dc_data_flights.navaids
+GO
+TUNE TABLE dc_data_flights.regions 
+GO
+TUNE TABLE dc_data_flights.runways
+GO
+TUNE TABLE dc_data_flights.planes
+GO
+TUNE TABLE dc_data_flights.routes
+GO
+UPDATE dc_data_flights.airports SET iata_code=NULL WHERE iata_code=0 
+GO
+UPDATE dc_data_flights.airports SET iso_country=NULL WHERE iso_country=0 
+GO
+ALTER TABLE dc_data_flights.airport_freq
+    ADD CONSTRAINT fk_airport_freq_airports_airport_ident 
+        FOREIGN KEY (airport_ident) REFERENCES dc_data_flights.airports(ident)
+GO
+
+ALTER TABLE dc_data_flights.runways
+    ADD CONSTRAINT fk_runways_airports_airport_ident 
+        FOREIGN KEY (airport_ident) REFERENCES dc_data_flights.airports(ident)
+GO
+
+ALTER TABLE dc_data_flights.airports
+    ADD CONSTRAINT fk_airports_iso_country_countries_code 
+        FOREIGN KEY (iso_country) REFERENCES dc_data_flights.countries(code)
+GO
+
+ALTER TABLE dc_data_flights.airports
+    ADD CONSTRAINT fk_airports_iso_region_region_code 
+        FOREIGN KEY (iso_region) REFERENCES dc_data_flights.regions(code)
+GO
+
+ALTER TABLE dc_data_flights.navaids
+    ADD CONSTRAINT fk_navaids_iso_country_countries_code 
+        FOREIGN KEY (iso_country) REFERENCES dc_data_flights.countries(code)
+GO   
+
+ALTER TABLE dc_data_flights.navaids
+    ADD CONSTRAINT fk_navaids_associated_airport_airports_ident 
+        FOREIGN KEY (associated_airport) REFERENCES dc_data_flights.airports(ident)
+GO        
+
+ALTER TABLE dc_data_flights.regions
+    ADD CONSTRAINT fk_regions_iso_country_countries_code 
+        FOREIGN KEY (iso_country) REFERENCES dc_data_flights.countries(code)
 GO
