@@ -79,11 +79,6 @@ By default the Container ports 1972; 52773; 53773 are mapped to the same local p
 docker-compose up -d
 ```
 
-In order to prevent problems with the data encoding when loading, please make the following setting on the %Java Server: -Dfile.encoding=UTF-8
-See the screenshots for details:
-![%Java Server Settings](/doc/change_jvm_param_for_javaserver.png)
-![%Java Server Param](/doc/change_jvm_param_for_javaserver_file_encoding.png)
-
 ## Data sources
 
 * Airports http://ourairports.com/data/
