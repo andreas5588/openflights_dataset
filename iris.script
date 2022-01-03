@@ -6,15 +6,13 @@ set srv = $system.external.getServer("%Java Server")
 set srv.JVMArgs = "-Dfile.encoding=UTF-8"
 set modifiedserver = $system.external.modifyServer(srv)
 
+; this create the openflights database
 DO $SYSTEM.SQL.Schema.ImportDDL("/opt/irisbuild/src/ddl/01_create_db.sql","/opt/irisbuild/01_ddl_errors.log","IRIS")
-
-; this create the openflights namespace
-;DO ##class(Openflights.Utils).RunDDL("/opt/irisbuild/src/ddl/01_create_db.sql",,0,1)
 
 ; this doesnt't work cause LOAD DATA is not supported
 ;DO $SYSTEM.SQL.Schema.ImportDDL("/opt/irisbuild/src/ddl/02_create_db_model.sql","/opt/irisbuild/02_ddl_errors.log","IRIS")
 
-; execute the ddl statemens - the first statement in the file is the USE DATABASE openflights
+; execute the ddl statemens - the first statement in the file is: USE DATABASE openflights
 DO ##class(Openflights.Utils).RunDDL("/opt/irisbuild/src/ddl/02_create_db_model.sql",,0,1)
 
 halt

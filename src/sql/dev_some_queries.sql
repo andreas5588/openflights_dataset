@@ -1,8 +1,8 @@
-SELECT TOP 100 a.*,f.* FROM flights.airports a
-INNER JOIN flights.airport_freq f ON f.airport_id = a.ID
+SELECT TOP 100 a.*,f.* FROM dc_data_flights.airports a
+INNER JOIN dc_data_flights.airport_freq f ON f.airport_id = a.ID
 WHERE a.ident='EDDF'
 GO
-SELECT id FROM flights.airports
+SELECT id FROM dc_data_flights.airports
 GROUP BY id
 HAVING COUNT(*) > 1
 GO
@@ -28,5 +28,5 @@ SELECT TOP 100
        usagetype,
        POWER,
        associated_airport
-FROM flights.navaids 
+FROM dc_data_flights.navaids 
 WHERE associated_airport='EDDF'

@@ -1,27 +1,27 @@
-DROP TABLE flights.airlines 
---TRUNCATE TABLE flights.airlines
+DROP TABLE dc_data_flights.airlines 
+--TRUNCATE TABLE dc_data_flights.airlines
 GO
-DROP TABLE flights.airport_freq 
---TRUNCATE TABLE flights.airport_freq 
+DROP TABLE dc_data_flights.airport_freq 
+--TRUNCATE TABLE dc_data_flights.airport_freq 
 GO
-DROP TABLE flights.airports 
---TRUNCATE TABLE flights.airports
+DROP TABLE dc_data_flights.airports 
+--TRUNCATE TABLE dc_data_flights.airports
 GO
-DROP TABLE flights.countries 
---TRUNCATE TABLE flights.countries 
+DROP TABLE dc_data_flights.countries 
+--TRUNCATE TABLE dc_data_flights.countries 
 GO
-DROP TABLE flights.navaids
---TRUNCATE TABLE flights.navaids
+DROP TABLE dc_data_flights.navaids
+--TRUNCATE TABLE dc_data_flights.navaids
 GO
-DROP TABLE flights.regions 
---TRUNCATE TABLE flights.regions
+DROP TABLE dc_data_flights.regions 
+--TRUNCATE TABLE dc_data_flights.regions
 GO
-DROP TABLE flights.runways
---TRUNCATE TABLE flights.runways
+DROP TABLE dc_data_flights.runways
+--TRUNCATE TABLE dc_data_flights.runways
 GO
-DROP TABLE flights.planes
---TRUNCATE TABLE flights.planes
+DROP TABLE dc_data_flights.planes
+--TRUNCATE TABLE dc_data_flights.planes
 GO
-DROP TABLE flights.routes
---TRUNCATE TABLE flights.routes
+DROP TABLE dc_data_flights.routes
+--TRUNCATE TABLE dc_data_flights.routes
 GO

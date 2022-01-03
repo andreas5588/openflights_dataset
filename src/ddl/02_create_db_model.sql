@@ -1,6 +1,6 @@
 USE DATABASE openflights
 GO
-CREATE TABLE flights.airlines 
+CREATE TABLE dc_data_flights.airlines 
 (
 	%DESCRIPTION 'Contains information obout airlines. Data Source: https://openflights.org/data.html',
 	id      INT NOT NULL %DESCRIPTION 'OpenFlights identifier for this airline',
@@ -26,7 +26,7 @@ COLUMNS
 	country  VARCHAR(255),
 	active   CHAR(1)
 )
-INTO flights.airlines
+INTO dc_data_flights.airlines
 (
 	id,
 	name,
@@ -50,7 +50,7 @@ VALUES
 )
 USING {"from": {"file": {"header":"0","columnseparator":","} }}
 GO
-CREATE TABLE flights.airport_freq 
+CREATE TABLE dc_data_flights.airport_freq 
 (
   %DESCRIPTION 'Each row in this table represents a single airport radio frequency for voice communication (radio navigation aids appear in table navaids). The column airport_ident is a foreign key referencing the ident column in table airports for the associated airport. Data Source: https://ourairports.com/help/data-dictionary.html',
   id int NOT NULL  					%DESCRIPTION 'Internal OurAirports integer identifier for the frequency. This will stay persistent, even if the radio frequency or description changes',
@@ -63,7 +63,7 @@ CREATE TABLE flights.airport_freq
 )
 GO
 LOAD DATA FROM FILE '/opt/irisbuild/data/airport_freq.csv' 
-INTO flights.airport_freq
+INTO dc_data_flights.airport_freq
 (
   id,
   airport_id,
@@ -83,7 +83,7 @@ VALUES
 )
 USING {"from": {"file": {"header":"1","columnseparator":","} }}
 GO
-CREATE TABLE flights.airports 
+CREATE TABLE dc_data_flights.airports 
 (
 	%DESCRIPTION 'airports spanning the globe. Data Source: https://ourairports.com/help/data-dictionary.html',
 	id 					INT NOT NULL 				%DESCRIPTION 'Internal OurAirports integer identifier for the airport. This will stay persistent, even if the airport code changes',
@@ -108,7 +108,7 @@ CREATE TABLE flights.airports
 )
 GO
 LOAD DATA FROM FILE '/opt/irisbuild/data/airports.csv' 
-INTO flights.airports
+INTO dc_data_flights.airports
 (
 	id,
 	ident,
@@ -152,7 +152,7 @@ VALUES
 )
 USING {"from": {"file": {"header":"1","columnseparator":","} }}
 GO
-CREATE TABLE flights.countries 
+CREATE TABLE dc_data_flights.countries 
 (
 	%DESCRIPTION 'Each row represents a country or country-like entity (e.g. Hong Kong). The iso_country column in airports, navaids, and regions refer to the code column here. Data Source: https://ourairports.com/help/data-dictionary.html',
 	id 				INT NOT NULL 			%DESCRIPTION 'Internal OurAirports integer identifier for the country. This will stay persistent, even if the country name or code changes.',
@@ -165,7 +165,7 @@ CREATE TABLE flights.countries
 )
 GO
 LOAD DATA FROM FILE '/opt/irisbuild/data/countries.csv' 
-INTO flights.countries
+INTO dc_data_flights.countries
 (
 	id,
 	code,
@@ -185,7 +185,7 @@ VALUES
 )
 USING {"from": {"file": {"header":"1","columnseparator":","} }}
 GO
-CREATE TABLE flights.navaids 
+CREATE TABLE dc_data_flights.navaids 
 (
 	  %DESCRIPTION 'Each row table represents a single radio navigation. When the navaid is associated with an airport, the associated_airport field links to the ident field in airports. Data Source: https://ourairports.com/help/data-dictionary.html',
 	  id            			INT NOT NULL 	%DESCRIPTION 'Internal OurAirports integer identifier for the navaid. This will stay persistent, even if the navaid identifier or frequency changes',
@@ -213,7 +213,7 @@ CREATE TABLE flights.navaids
 )
 GO
 LOAD DATA FROM FILE '/opt/irisbuild/data/navaids.csv' 
-INTO flights.navaids
+INTO dc_data_flights.navaids
 (
 	id,
 	filename,
@@ -261,7 +261,7 @@ VALUES
 )
 USING {"from": {"file": {"header":"1","columnseparator":","} }}
 GO
-CREATE TABLE flights.planes 
+CREATE TABLE dc_data_flights.planes 
 (
 	%DESCRIPTION 'contains a curated selection of passenger aircraft with IATA and/or ICAO codes, covering the vast majority of flights operated today and commonly used in flight schedules and reservation systems. Data Source: https://openflights.org/data.html',
 	name varchar(255) NOT NULL 	%DESCRIPTION 'Full name of the aircraft',
@@ -277,7 +277,7 @@ COLUMNS
 	iata VARCHAR(3),
 	icao VARCHAR(4)
 )
-INTO flights.planes
+INTO dc_data_flights.planes
 (
 	name,
 	iata,
@@ -291,7 +291,7 @@ VALUES
 )
 USING {"from": {"file": {"header":"0","columnseparator":","} }}
 GO
-CREATE TABLE flights.regions 
+CREATE TABLE dc_data_flights.regions 
 (
   %DESCRIPTION 'Each row represents a high-level administrative subdivision of a country. The iso_region column in airports to the code column in this table. Data Source: https://ourairports.com/help/data-dictionary.html',
   id 				INT NOT NULL 				%DESCRIPTION 'Internal OurAirports integer identifier for the region. This will stay persistent, even if the region code changes.',
@@ -306,7 +306,7 @@ CREATE TABLE flights.regions
 )
 GO
 LOAD DATA FROM FILE '/opt/irisbuild/data/regions.csv' 
-INTO flights.regions
+INTO dc_data_flights.regions
 (
   id,
   code,
@@ -330,7 +330,7 @@ VALUES
 )
 USING {"from": {"file": {"header":"1","columnseparator":","} }}
 GO
-CREATE TABLE flights.routes 
+CREATE TABLE dc_data_flights.routes 
 (
 	%DESCRIPTION 'Contains routes between airports and airlines spanning the globe. Data Source: https://openflights.org/data.html',
 	airline           CHAR(2) NOT NULL 	%DESCRIPTION '2-letter (IATA) or 3-letter (ICAO) code of the airline',
@@ -357,7 +357,7 @@ COLUMNS
   stops             INT,
   equipment         VARCHAR(255)
 )
-INTO flights.routes
+INTO dc_data_flights.routes
 (
   airline,
   airline_id,
@@ -383,7 +383,7 @@ VALUES
 )
 USING {"from": {"file": {"header":"0","columnseparator":","} }}
 GO
-CREATE TABLE flights.runways 
+CREATE TABLE dc_data_flights.runways 
 (
 	%DESCRIPTION 'Each row in this dataset represents a single airport landing surface (runway, helipad, or waterway). The initial fields apply to the entire surface, in both directions. Fields beginning with le_* apply only to the low-numbered end of the runway (e.g. 09), while fields beginning with he_* apply only to the high-numbered end of the runway (e.g. 27). Data Source: https://ourairports.com/help/data-dictionary.html',
 	id            				INT NOT NULL 		%DESCRIPTION 'Internal OurAirports integer identifier for the runway. This will stay persistent, even if the runway numbering changes',
@@ -412,7 +412,7 @@ CREATE TABLE flights.runways
 )
 GO
 LOAD DATA FROM FILE '/opt/irisbuild/data/runways.csv' 
-INTO flights.runways
+INTO dc_data_flights.runways
 (
 	id,
 	airport_id,
