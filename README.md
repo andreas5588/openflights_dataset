@@ -86,3 +86,11 @@ By default the Container ports 1972; 52773; 53773 are mapped to the same local p
 ```shell
 docker-compose up -d
 ```
+
+## Some usful links
+
+This is a article-post on community.intersystems.com related to this github repo: https://community.intersystems.com/post/tips-and-tricks-brand-new-load-data-command
+
+As described on this post, I had problems creating and populating the tables via DDL script in IRIS. Unfortunately *$SYSTEM.SQL.Schema.ImportDDL* does not support many SQL statements, e.g. USE DATABASE or LOAD DATA.
+Fortunately Benjamin De Boe (https://github.com/bdeboe) had a solution in one of his repositories :-)
+The IRIS class file /src/cls/Utils.cls and within the Openflights.Utils.RunDDL method based on his https://github.com/bdeboe/isc-adventureworks/blob/main/src/cls/AdventureWorks/Utils.cls file. I've just changed the statement delimiter from ";" to "GO". Thanks Benjamin!
