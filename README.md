@@ -1,35 +1,36 @@
 # Openflights demo dataset
-This a demo dataset, datamodel for InterSystems IRIS. This model was build for the IRIS Dataset contest: https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021 The data used by this datamodel are based on datasets from ourairports.com and openflights.org 
+This is a demo dataset\datamodel for InterSystems IRIS. This model is build for the IRIS Dataset contest: https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021 
+
+The data used by this datamodel are based on datasets from ourairports.com and openflights.org 
+
 To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2021.2.0.617 (preview) is used. Details about the new SQL command can be found here: https://docs.intersystems.com/iris20212/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
 
-With this example project you have at least two use cases: 
-    See and evaluate the using of LOAD DATA 
-    or 
-    just explore the openflights datamodel with SQL
+With this example project you have at least two use cases:
+
+See and evaluate the using of LOAD DATA 
+or just explore the openflights datamodel
 
 ## Data in this model
 
-### data from: https://openflights.org/data.html#airline
+The data comes from ourairports.com and openflights.org. 
+
+The openflights.org website makes the data available under the Open Database License. For details please see: https://openflights.org/data.html#license
+The ourairports.com website makes the data from there available to the Public Domain. The data comes with no guarantee of accuracy or fitness for use. 
+
+### Data from: https://openflights.org/data.html
 The "dat"-files are simple text files
-* airlines.dat Contais information on airlines
-* routes.dat Route file contains routes between airports on airlines spanning the globe
-* planes.dat The OpenFlights plane file contains a curated selection of 173 passenger aircraft with IATA and/or ICAO codes, covering the vast majority of flights operated today and commonly used in flight schedules and reservation systems.
+* airlines.dat file contains information on airlines
+* routes.dat file contains routes between airports and airlines
+* planes.dat file contains aircrafts with IATA and/or ICAO codes
 
-### data from: https://ourairports.com/help/data-dictionary.html
-
-* airports.csv 
-Each row in this dataset represents the record for a single airport. The primary key for interoperability purposes with other datasets is ident, but the actual internal OurAirports primary key is id. iso_region is a foreign key into the regions.csv download file. 
-
-* airport_freq.csv 
-Each row in this dataset represents a single airport radio frequency for voice communication (radio navigation aids appear in navaids.csv). The column airport_ident is a foreign key referencing the ident column in airports.csv for the associated airport. 
-* countries.csv 
-Each row represents a country or country-like entity (e.g. Hong Kong). The iso_country column in airports.csv, navaids.csv, and regions.csv refer to the code column here. 
-* runways.csv 
-Each row in this dataset represents a single airport landing surface (runway, helipad, or waterway). The initial fields apply to the entire surface, in both directions. Fields beginning with le_* apply only to the low-numbered end of the runway (e.g. 09), while fields beginning with he_* apply only to the high-numbered end of the runway (e.g. 27). 
-* navaids.csv 
-Each row in this dataset represents a single radio navigation. When the navaid is associated with an airport, the associated_airport field links to the ident field in airports.csv. 
-* regions.csv 
-Each row represents a high-level administrative subdivision of a country. The iso_region column in airports.csv links to the code column in this dataset. 
+### Data from: https://ourairports.com/help/data-dictionary.html https://github.com/davidmegginson/ourairports-data
+The "csv"-files are simple text files
+* airports.csv - Each row represents the record for a single airport.
+* airport_freq.csv - Each row represents a single airport radio frequency for voice communication (radio navigation aids appear in navaids.csv). 
+* countries.csv - Each row represents a country or country-like entity (e.g. Hong Kong). 
+* runways.csv - Each row represents a single airport landing surface (runway, helipad, or waterway).
+* navaids.csv - Each row represents a single radio navigation. 
+* regions.csv - Each row represents a high-level administrative subdivision of a country. 
 
 ## State of loading
 
@@ -43,9 +44,15 @@ Each row represents a high-level administrative subdivision of a country. The is
 * :heavy_check_mark: routes.dat (667.663 of 67.663 rows loaded)
 * :heavy_check_mark: runways.csv (42.932 of  rows 42.932 loaded)
 
-You find the files above in the container in folder: /opt/irisbuild/data/
+You find the files within docker the container in folder: /opt/irisbuild/data/
 
 ## Visual representation of the data model
+
+ The Tables are created in SCHEMA dc_data_flights. The tables were named according to the files from which the data originated.
+
+You found more details about the content of the tables and columns within the database. The IRIS CREATE TABLE *%DESCRIPTION* option was used for the purpose to document the datamodel.
+![all tables and row counts](/doc/datamodel_remarks.png)
+
 
 FKs are not all set... cause of data inconsistencies, indices are still missing
 ... stay tune
@@ -79,15 +86,3 @@ By default the Container ports 1972; 52773; 53773 are mapped to the same local p
 ```shell
 docker-compose up -d
 ```
-
-## Data sources
-
-* Airports http://ourairports.com/data/
-* Routes http://openflights.org/data.html
-* Airport total passengers
-** http://www.aci.aero/
-** http://en.wikipedia.org/wiki/List_of_the_world%27s_busiest_airports_by_passenger_traffic#2014_statistics
-
-
-## a git repos that work already with the openflights data
-https://github.com/jpatokal/openflights
