@@ -1,9 +1,7 @@
 
- [![Objectscriptquality Status](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fopenflights_dataset&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fopenflights_dataset)
+[![Quality Gate Status](https://community.objectscriptquality.com/api/project_badges/measure?project=intersystems_iris_community%2Fopenflights_dataset&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fopenflights_dataset)
  
  
-[![Docker-ports](https://img.shields.io/badge/dynamic/yaml?color=blue&label=docker-compose&prefix=ports%20-%20&query=%24.services.iris.ports&url=https%3A%2F%2Fraw.githubusercontent.com%2Fandreas5588%2Fopenflights_dataset%2Fmaster%2Fdocker-compose.yml)](https://raw.githubusercontent.com/andreas5588/openflights_dataset/master/docker-compose.yml)
-
 
 # Openflights demo dataset
 This is a demo dataset\datamodel for InterSystems IRIS. This model is build for the IRIS Dataset contest: https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021 
@@ -100,7 +98,10 @@ git clone https://github.com/andreas5588/openflights_dataset.git
 docker-compose build
 ```
 
-By default the Container ports 1972; 52773; 53773 are mapped to the same local ports. Please check the availability of the ports on your maschine first.
+By default the Container ports  [![Docker-ports](https://img.shields.io/badge/dynamic/yaml?color=blue&label=docker-compose&prefix=ports%20-%20&query=%24.services.iris.ports&url=https%3A%2F%2Fraw.githubusercontent.com%2Fandreas5588%2Fopenflights_dataset%2Fmaster%2Fdocker-compose.yml)](https://raw.githubusercontent.com/andreas5588/openflights_dataset/master/docker-compose.yml)
+
+ are mapped to the same local ports. Please check the availability of the ports on your maschine first.
+
 
 3. Run the iris-openflight container with the datamodel:
 
