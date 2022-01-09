@@ -1,3 +1,10 @@
+
+ [![Objectscriptquality Status](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fopenflights_dataset&metric=alert_status)](https://community.objectscriptquality.com/dashboard?id=intersystems_iris_community%2Fopenflights_dataset)
+ 
+ 
+[![Docker-ports](https://img.shields.io/badge/dynamic/yaml?color=blue&label=docker-compose&prefix=ports%20-%20&query=%24.services.iris.ports&url=https%3A%2F%2Fraw.githubusercontent.com%2Fandreas5588%2Fopenflights_dataset%2Fmaster%2Fdocker-compose.yml)](https://raw.githubusercontent.com/andreas5588/openflights_dataset/master/docker-compose.yml)
+
+
 # Openflights demo dataset
 This is a demo dataset\datamodel for InterSystems IRIS. This model is build for the IRIS Dataset contest: https://community.intersystems.com/post/technology-bonuses-intersystems-iris-datasets-contest-2021 
 
@@ -44,7 +51,7 @@ The "csv"-files are simple text files
 * :heavy_check_mark: routes.dat (667.663 of 67.663 rows loaded)
 * :heavy_check_mark: runways.csv (42.932 of  rows 42.932 loaded)
 
-You find the files within docker the container in folder: /opt/irisbuild/data/
+You find the raw data files within docker container in folder: /opt/irisbuild/data/
 
 ## Visual representation of the data model
 
@@ -59,9 +66,23 @@ FKs are not all set... cause of data inconsistencies, indices are still missing
 
 ![all tables and row counts](/doc/datamodel.png)
 
+## data model documentation in folder /doc/dbdoc
+
+In the folder /doc/dbdoc you will find a complete html based documentation of the data model. The documentation contains details about table and column names as well as data types and relationships. To use the documentation, simply open the file /doc/dbdoc/index.html with a webbroser: [See here](/doc/dbdoc/index.html)
+
+This is a screenshot of the entry page
+
+![db documentation](/doc/database_doc.png)
+
+From each entity you can navigate by relationships to the dependent tables. The relationships are also displayed graphically.
+
+![db documentation](/doc/diagram_doc.png)
+
+The generated documentation contains the explanations stored in the %DESCRIPTION property of tables and columns. With this information it should be easy to explore the data model.
+
 # Prerequisites
 
-Make sure you have git and Docker desktop installed.
+Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
 
 ## Installation
 

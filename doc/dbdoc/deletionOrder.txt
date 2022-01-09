@@ -1,0 +1,9 @@
+routes
+navaids
+runways
+airport_freq
+airlines
+airports
+regions
+countries
+planes

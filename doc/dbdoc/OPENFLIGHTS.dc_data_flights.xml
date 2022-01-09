@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="OPENFLIGHTS" schema="dc_data_flights" type="InterSystems IRIS - InterSystems IRIS Version 2021.2.0.617 xDBC Protocol Version 65">
+   <tables>
+      <table name="airlines" numRows="6162" remarks="Contains information obout airlines. Data Source: https://openflights.org/data.html" schema="dc_data_flights" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="OpenFlights identifier for this airline" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="name" nullable="true" remarks="Name of the airline" size="255" type="VARCHAR" typeCode="12">
+            <parent column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="dc_data_flights" table="planes"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="alias" nullable="true" remarks="Alias of the airline. For example, All Nippon Airways is commonly known as ANA" size="255" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="iata" nullable="true" remarks="2-letter IATA code, if available" size="2" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="icao" nullable="true" remarks="3-letter ICAO code, if available" size="3" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="callsign" nullable="true" remarks="Airline callsign" size="255" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="country" nullable="true" remarks="Country or territory where airport is located. See Countries to cross-reference to ISO 3166-1 codes" size="255" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="&quot;N&quot;" digits="0" id="7" name="active" nullable="true" remarks="Y if the airline is or has until recently been operational, N if it is defunct. This field is not reliable: in particular, major airlines that stopped flying long ago, but have not had their IATA code reassigned (eg. Ansett/AN), will incorrectly show as Y" size="1" type="VARCHAR" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="id_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="airport_freq" numRows="28074" remarks="Each row in this table represents a single airport radio frequency for voice communication (radio navigation aids appear in table navaids). The column airport_ident is a foreign key referencing the ident column in table airports for the associated ai" schema="dc_data_flights" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="Internal OurAirports integer identifier for the frequency. This will stay persistent, even if the radio frequency or description changes" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="airport_id" nullable="false" remarks="Internal integer foreign key matching the id column for the associated airport in airports (airport_ident is a better alternative.)" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="airport_ident" nullable="false" remarks="Externally-visible string foreign key matching the ident column for the associated airport in airports" size="8" type="VARCHAR" typeCode="12">
+            <parent column="ident" foreignKey="fk_airport_freq_airports_airport_ident" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="airports"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="type" nullable="false" remarks="A code for the frequency type. This isnt (currently) a controlled vocabulary, but probably will be soon. Some common values are &quot;TWR&quot; (tower), &quot;ATF&quot; or &quot;CTAF&quot; (common traffic frequency), &quot;GND&quot; (ground control), &quot;RMP&quot; (ramp control), &quot;ATIS&quot; (automated weather), &quot;RCO&quot; (remote radio outlet), &quot;ARR&quot; (arrivals), &quot;DEP&quot; (departures), &quot;UNICOM&quot; (monitored ground station), and &quot;RDO&quot; (a flight-service station)." size="25" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="description" nullable="false" remarks="A description of the frequency, typically the way a pilot would open a call on it" size="255" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="frequency_mhz" nullable="false" remarks="Radio voice frequency in megahertz. Note that the same frequency may appear multiple times for an airport, serving different functions." size="8" type="DOUBLE" typeCode="8"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="id_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="airports" numRows="69197" remarks="airports spanning the globe. Data Source: https://ourairports.com/help/data-dictionary.html" schema="dc_data_flights" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="Internal OurAirports integer identifier for the airport. This will stay persistent, even if the airport code changes" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="ident" nullable="false" remarks="The text identifier used in the OurAirports URL. This will be the ICAO code if available. Otherwise, it will be a local airport code (if no conflict), or if nothing else is available, an internally-generated code starting with the ISO2 country code, followed by a dash and a four-digit number" size="7" type="VARCHAR" typeCode="12">
+            <child column="airport_ident" foreignKey="fk_airport_freq_airports_airport_ident" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="airport_freq"/>
+            <child column="associated_airport" foreignKey="fk_navaids_associated_airport_airports_ident" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="navaids"/>
+            <child column="airport_ident" foreignKey="fk_runways_airports_airport_ident" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="runways"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="type" nullable="false" remarks="The type of the airport. Allowed values are closed_airport, heliport, large_airport, medium_airport, seaplane_base, and small_airport. See the map legend for a definition of each type" size="25" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="true" remarks="The official airport name, including Airport, Airstrip, etc" size="255" type="VARCHAR" typeCode="12">
+            <parent column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="dc_data_flights" table="planes"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="latitude_deg" nullable="true" remarks="The airport latitude in decimal degrees (positive for north)" size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="longitude_deg" nullable="true" remarks="The airport longitude in decimal degrees (positive for east)" size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="elevation_ft" nullable="true" remarks="The airport elevation MSL in feet (not metres)" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="continent" nullable="true" remarks="The code for the continent where the airport is (primarily) located. Allowed values are AF (Africa), AN (Antarctica), AS (Asia), EU (Europe), NA (North America), OC (Oceania), or SA (South America)" size="2" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="iso_country" nullable="true" remarks="The two-character ISO 3166:1-alpha2 code for the country where the airport is (primarily) located. A handful of unofficial, non-ISO codes are also in use, such as &quot;XK&quot; for Kosovo" size="2" type="VARCHAR" typeCode="12">
+            <parent column="code" foreignKey="fk_airports_iso_country_countries_code" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="countries"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="iso_region" nullable="true" remarks="An alphanumeric code for the high-level administrative subdivision of a country where the airport is primarily located (e.g. province, governorate), prefixed by the ISO2 country code and a hyphen. OurAirports uses ISO 3166:2 codes whenever possible, preferring higher administrative levels, but also includes some custom codes. See the documentation for regions.csv." size="7" type="VARCHAR" typeCode="12">
+            <parent column="code" foreignKey="fk_airports_iso_region_region_code" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="regions"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="municipality" nullable="true" remarks="The primary municipality that the airport serves (when available). Note that this is not necessarily the municipality where the airport is physically located." size="255" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="scheduled_service" nullable="true" remarks="&quot;yes&quot; if the airport currently has scheduled airline service; &quot;no&quot; otherwise" size="1" type="BIT" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="gps_code" nullable="true" remarks="The code that an aviation GPS database (such as Jeppesens or Garmins) would normally use for the airport. This will always be the ICAO code if one exists. Note that, unlike the ident column, this is not guaranteed to be globally unique" size="4" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="iata_code" nullable="true" remarks="The three-letter IATA code for the airport (if it has one)" size="3" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="local_code" nullable="true" remarks="The local country code for the airport, if different from the gps_code and iata_code fields (used mainly for US airports)" size="7" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="home_link" nullable="true" remarks="URL of the airports official home page on the web, if one exists" size="1024" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="wikipedia_link" nullable="true" remarks="URL of the airports page on Wikipedia, if one exists" size="1024" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="keywords" nullable="true" remarks="Extra keywords/phrases to assist with search, comma-separated. May include former names for the airport, alternate codes, names in other languages, nearby tourist destinations, etc." size="1024" type="VARCHAR" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="id_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="AIRPORTS_UNIQUE3" unique="true">
+            <column ascending="true" name="ident"/>
+         </index>
+      </table>
+      <table name="countries" numRows="247" remarks="Each row represents a country or country-like entity (e.g. Hong Kong). The iso_country column in airports, navaids, and regions refer to the code column here. Data Source: https://ourairports.com/help/data-dictionary.html" schema="dc_data_flights" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="Internal OurAirports integer identifier for the country. This will stay persistent, even if the country name or code changes." size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="code" nullable="false" remarks="The two-character ISO 3166:1-alpha2 code for the country. A handful of unofficial, non-ISO codes are also in use, such as &quot;XK&quot; for Kosovo. The iso_country field in airports.csv points into this column." size="2" type="VARCHAR" typeCode="12">
+            <child column="iso_country" foreignKey="fk_airports_iso_country_countries_code" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="airports"/>
+            <child column="iso_country" foreignKey="fk_navaids_iso_country_countries_code" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="navaids"/>
+            <child column="iso_country" foreignKey="fk_regions_iso_country_countries_code" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="regions"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="name" nullable="false" remarks="The common English-language name for the country. Other variations of the name may appear in the keywords field to assist with search." size="255" type="VARCHAR" typeCode="12">
+            <parent column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="dc_data_flights" table="planes"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="continent" nullable="false" remarks="The code for the continent where the country is (primarily) located. See the continent code in airports for allowed values." size="2" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="wikipedia_link" nullable="true" remarks="Link to the Wikipedia article about the country." size="1024" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="keywords" nullable="true" remarks="A comma-separated list of search keywords/phrases related to the country." size="1024" type="VARCHAR" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="id_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="COUNTRIES_UNIQUE3" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="navaids" numRows="11020" remarks="Each row table represents a single radio navigation. When the navaid is associated with an airport, the associated_airport field links to the ident field in airports. Data Source: https://ourairports.com/help/data-dictionary.html" schema="dc_data_flights" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="Internal OurAirports integer identifier for the navaid. This will stay persistent, even if the navaid identifier or frequency changes" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="filename" nullable="true" remarks="This is a unique string identifier constructed from the navaid name and country, and used in the OurAirports URL" size="255" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="ident" nullable="true" remarks="The 1-3 character identifer that the navaid transmits" size="8" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="true" remarks="The name of the navaid, excluding its type." size="255" type="VARCHAR" typeCode="12">
+            <parent column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="dc_data_flights" table="planes"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="type" nullable="true" remarks="The type of the navaid. Options are &quot;DME&quot;, &quot;NDB&quot;, &quot;NDB-DME&quot;, &quot;TACAN&quot;, &quot;VOR&quot;, &quot;VOR-DME&quot;, or &quot;VORTAC&quot;. See the map legend for more information about each type" size="8" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="frequency_khz" nullable="true" remarks="The frequency of the navaid in kilohertz. If the Navaid operates on the VHF band (VOR, VOR-DME) or operates on the UHF band with a paired VHF frequency (DME, TACAN, VORTAC), the you need to divide this number by 1,000 to get the frequency in megahertz (115.3 MHz in this example). For an NDB or NDB-DME, you can use this frequency directly." size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="latitude_deg" nullable="true" remarks="The latitude of the navaid in decimal degrees (negative for south)." size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="longitude_deg" nullable="true" remarks="The longitude of the navaid in decimal degrees (negative for west)." size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="location" nullable="true" remarks="" size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="elevation_ft" nullable="true" remarks="The navaids elevation MSL in feet (not metres)." size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="iso_country" nullable="true" remarks="The two-character ISO 3166:1-alpha2 code for the country that operates the navaid. A handful of unofficial, non-ISO codes are also in use, such as &quot;XK&quot; for Kosovo" size="2" type="VARCHAR" typeCode="12">
+            <parent column="code" foreignKey="fk_navaids_iso_country_countries_code" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="countries"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="dme_frequency_khz" nullable="true" remarks="The paired VHF frequency for the DME (or TACAN) in kilohertz. Divide by 1,000 to get the paired VHF frequency in megahertz (e.g. 115.3 MHz)." size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="dme_channel" nullable="true" remarks="The DME channel (an alternative way of tuning distance-measuring equipment)" size="255" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="dme_latitude_deg" nullable="true" remarks="The latitude of the associated DME in decimal degrees (negative for south). If missing, assume that the value is the same as latitude_deg." size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="dme_longitude_deg" nullable="true" remarks="The longitude of the associated DME in decimal degrees (negative for west). If missing, assume that the value is the same as longitude_deg" size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="dme_elevation_ft" nullable="true" remarks="The associated DME transmitters elevation MSL in feet. If missing, assume that its the same value as elevation_ft." size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="slaved_variation_deg" nullable="true" remarks="The magnetic variation adjustment built into a VORs, VOR-DMEs, or TACANs radials. Positive means east (added to the true direction), and negative means west (subtracted from the true direction). This will not usually be the same as magnetic-variation because the magnetic pole is constantly in motion." size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="magnetic_variation_deg" nullable="true" remarks="The actual magnetic variation at the navaids location. Positive means east (added to the true direction), and negative means west (subtracted from the true direction)." size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="usagetype" nullable="true" remarks="The primary function of the navaid in the airspace system. Options include &quot;HI&quot; (high-altitude airways, at or above flight level 180), &quot;LO&quot; (low-altitude airways), &quot;BOTH&quot; (high- and low-altitude airways), &quot;TERM&quot; (terminal-area navigation only), and &quot;RNAV&quot; (non-GPS area navigation)" size="8" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="power" nullable="true" remarks="The power-output level of the navaid. Options include &quot;HIGH&quot;, &quot;MEDIUM&quot;, &quot;LOW&quot;, and &quot;UNKNOWN&quot;." size="8" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="associated_airport" nullable="true" remarks="The OurAirports text identifier (usually the ICAO code) for an airport associated with the navaid. Links to the ident column in airports" size="7" type="VARCHAR" typeCode="12">
+            <parent column="ident" foreignKey="fk_navaids_associated_airport_airports_ident" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="airports"/>
+         </column>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="id_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+      <table name="planes" numRows="246" remarks="contains a curated selection of passenger aircraft with IATA and/or ICAO codes, covering the vast majority of flights operated today and commonly used in flight schedules and reservation systems. Data Source: https://openflights.org/data.html" schema="dc_data_flights" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="name" nullable="false" remarks="Full name of the aircraft" size="255" type="VARCHAR" typeCode="12">
+            <child column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="dc_data_flights" table="airlines"/>
+            <child column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="dc_data_flights" table="airports"/>
+            <child column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="dc_data_flights" table="countries"/>
+            <child column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="dc_data_flights" table="navaids"/>
+            <child column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="dc_data_flights" table="regions"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="iata" nullable="true" remarks="Unique three-letter IATA identifier for the aircraft" size="3" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="icao" nullable="true" remarks="Unique four-letter ICAO identifier for the aircraft" size="4" type="VARCHAR" typeCode="12"/>
+         <primaryKey column="name" sequenceNumberInPK="1"/>
+         <index name="name_pk" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+      </table>
+      <table name="regions" numRows="3964" remarks="Each row represents a high-level administrative subdivision of a country. The iso_region column in airports to the code column in this table. Data Source: https://ourairports.com/help/data-dictionary.html" schema="dc_data_flights" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="Internal OurAirports integer identifier for the region. This will stay persistent, even if the region code changes." size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="code" nullable="false" remarks="local_code prefixed with the country code to make a globally-unique identifier." size="7" type="VARCHAR" typeCode="12">
+            <child column="iso_region" foreignKey="fk_airports_iso_region_region_code" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="airports"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="local_code" nullable="false" remarks="The local code for the administrative subdivision. Whenever possible, these are official ISO 3166:2, at the highest level available, but in some cases OurAirports has to use unofficial codes. There is also a pseudo code &quot;U-A&quot; for each country, which means that the airport has not yet been assigned to a region (or perhaps cant be, as in the case of a deep-sea oil platform)." size="4" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="name" nullable="false" remarks="The common English-language name for the administrative subdivision. In some cases, the name in local languages will appear in the keywords field assist search." size="255" type="VARCHAR" typeCode="12">
+            <parent column="name" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="dc_data_flights" table="planes"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="continent" nullable="false" remarks="A code for the continent to which the region belongs. See the continent field in airports for a list of codes." size="2" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="iso_country" nullable="false" remarks="The two-character ISO 3166:1-alpha2 code for the country containing the administrative subdivision. A handful of unofficial, non-ISO codes are also in use, such as &quot;XK&quot; for Kosovo." size="2" type="VARCHAR" typeCode="12">
+            <parent column="code" foreignKey="fk_regions_iso_country_countries_code" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="countries"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="wikipedia_link" nullable="true" remarks="A link to the Wikipedia article describing the subdivision" size="1024" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="keywords" nullable="true" remarks="A comma-separated list of keywords to assist with search. May include former names for the region, and/or the region name in other languages." size="1024" type="VARCHAR" typeCode="12"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="id_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <index name="REGIONS_UNIQUE3" unique="true">
+            <column ascending="true" name="code"/>
+         </index>
+      </table>
+      <table name="routes" numRows="66392" remarks="Contains routes between airports and airlines spanning the globe. Data Source: https://openflights.org/data.html" schema="dc_data_flights" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="airline" nullable="false" remarks="2-letter (IATA) or 3-letter (ICAO) code of the airline" size="2" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="airline_id" nullable="false" remarks="Unique OpenFlights identifier for airline (see Table Airlines)" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="source_airport" nullable="false" remarks="3-letter (IATA) or 4-letter (ICAO) code of the source airport" size="3" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="source_airport_id" nullable="false" remarks="Unique OpenFlights identifier for source airport (see Table Airports)" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="dest_airport" nullable="false" remarks="3-letter (IATA) or 4-letter (ICAO) code of the destination airport" size="3" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="dest_airport_id" nullable="false" remarks="Unique OpenFlights identifier for destination airport (see Table Airports)" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="codeshare" nullable="true" remarks="Y if this flight is a codeshare (that is, not operated by Airline, but another carrier), empty otherwise." size="1" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="stops" nullable="false" remarks="Number of stops on this flight (0 for direct)" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="equipment" nullable="true" remarks="3-letter codes for plane type(s) generally used on this flight, separated by spaces" size="255" type="VARCHAR" typeCode="12"/>
+      </table>
+      <table name="runways" numRows="42929" remarks="Each row in this dataset represents a single airport landing surface (runway, helipad, or waterway). The initial fields apply to the entire surface, in both directions. Fields beginning with le_* apply only to the low-numbered end of the runway (e.g." schema="dc_data_flights" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="id" nullable="false" remarks="Internal OurAirports integer identifier for the runway. This will stay persistent, even if the runway numbering changes" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="airport_id" nullable="false" remarks="Internal integer foreign key matching the id column for the associated airport in airports.csv. (airport_ident is a better alternative.)" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="airport_ident" nullable="false" remarks="Externally-visible string foreign key matching the ident column for the associated airport in airports" size="8" type="VARCHAR" typeCode="12">
+            <parent column="ident" foreignKey="fk_runways_airports_airport_ident" implied="false" onDeleteCascade="false" schema="dc_data_flights" table="airports"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="length_ft" nullable="true" remarks="Length of the full runway surface (including displaced thresholds, overrun areas, etc) in feet." size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="width_ft" nullable="true" remarks="Width of the runway surface in feet." size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="surface" nullable="true" remarks="Code for the runway surface type. This is not yet a controlled vocabulary, but probably will be soon. Some common values include &quot;ASP&quot; (asphalt), &quot;TURF&quot; (turf), &quot;CON&quot; (concrete), &quot;GRS&quot; (grass), &quot;GRE&quot; (gravel), &quot;WATER&quot; (water), and &quot;UNK&quot; (unknown)." size="255" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="lighted" nullable="true" remarks="1 if the surface is lighted at night, 0 otherwise. (Note that this is inconsistent with airports.csv, which uses &quot;yes&quot; and &quot;no&quot; instead of 1 and 0.)" size="1" type="BIT" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="closed" nullable="true" remarks="1 if the runway surface is currently closed, 0 otherwise" size="1" type="BIT" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="le_ident" nullable="true" remarks="Identifier for the low-numbered end of the runway." size="6" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="le_latitude_deg" nullable="true" remarks="Latitude of the centre of the low-numbered end of the runway, in decimal degrees (positive is north), if available." size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="le_longitude_deg" nullable="true" remarks="Longitude of the centre of the low-numbered end of the runway, in decimal degrees (positive is east), if available." size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="le_location" nullable="true" remarks="" size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="le_elevation_ft" nullable="true" remarks="Elevation above MSL of the low-numbered end of the runway in feet." size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="le_heading_degt" nullable="true" remarks="Heading of the low-numbered end of the runway in degrees true (not magnetic)." size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="le_displaced_threshold_ft" nullable="true" remarks="Length of the displaced threshold (if any) for the low-numbered end of the runway, in feet." size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="he_ident" nullable="true" remarks="Identifier for the high-numbered end of the runway." size="6" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="he_latitude_deg" nullable="true" remarks="Latitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is north), if available." size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="he_longitude_deg" nullable="true" remarks="Longitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is east), if available" size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="he_location" nullable="true" remarks="" size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="he_elevation_ft" nullable="true" remarks="Longitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is east), if available" size="4" type="INTEGER" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="he_heading_degt" nullable="true" remarks="Heading of the high-numbered end of the runway in degrees true (not magnetic)" size="8" type="DOUBLE" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="he_displaced_threshold_ft" nullable="true" remarks="Length of the displaced threshold (if any) for the high-numbered end of the runway, in feet" size="4" type="INTEGER" typeCode="4"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="id_pk" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+      </table>
+   </tables>
+</database>

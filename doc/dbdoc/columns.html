@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>OPENFLIGHTS Database</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+        <!-- Bootstrap 3.3.5 -->
+        <link rel="stylesheet" href="bower/admin-lte/bootstrap/css/bootstrap.min.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="bower/font-awesome/css/font-awesome.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="bower/ionicons/css/ionicons.min.css">
+        <!-- DataTables -->
+        <link rel="stylesheet" href="bower/datatables.net-bs/css/dataTables.bootstrap.min.css">
+        <link rel="stylesheet" href="bower/datatables.net-buttons-bs/css/buttons.bootstrap.min.css">
+        <!-- Code Mirror -->
+        <link rel="stylesheet" href="bower/codemirror/codemirror.css">
+        <!-- Fonts -->
+        <link href='fonts/indieflower/indie-flower.css' rel='stylesheet' type='text/css'>
+        <link href='fonts/source-sans-pro/source-sans-pro.css' rel='stylesheet' type='text/css'>
+
+        <!-- Theme style -->
+        <link rel="stylesheet" href="bower/admin-lte/dist/css/AdminLTE.min.css">
+        <!-- Salvattore -->
+        <link rel="stylesheet" href="bower/salvattore/salvattore.css">
+        <!-- AdminLTE Skins. Choose a skin from the css/skins
+           folder instead of downloading all of them to reduce the load. -->
+        <link rel="stylesheet" href="bower/admin-lte/dist/css/skins/_all-skins.min.css">
+        <!-- SchemaSpy -->
+        <link rel="stylesheet" href="schemaSpy.css">
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="bower/html5shiv/html5shiv.min.js"></script>
+        <script src="bower/respond/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+    <body class="hold-transition skin-blue layout-top-nav">
+        <div class="wrapper">
+            <header class="main-header">
+                <nav class="navbar navbar-static-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <a href="index.html" class="navbar-brand"><b>OPENFLIGHTS</b> Database</a>
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"><i class="fa fa-bars"></i></button>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="index.html">Tables <span class="sr-only">(current)</span></a></li>
+                                <li><a href="columns.html" title="All of the columns in the schema">Columns</a></li>
+                                <li><a href="constraints.html" title="Useful for diagnosing error messages that just give constraint name or number">Constraints</a></li>
+                                <li><a href="relationships.html" title="Diagram of table relationships">Relationships</a></li>
+                                <li><a href="orphans.html" title="View of tables with neither parents nor children">Orphan&nbsp;Tables</a></li>
+                                <li><a href="anomalies.html" title="Things that might not be quite right">Anomalies</a></li>
+                                <li><a href="routines.html" title="Procedures and functions">Routines</a></li>
+                            </ul>
+                        </div>
+                        <!-- /.navbar-collapse -->
+                        <!-- Navbar Right Menu -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+            </header>
+            <!-- Main content -->
+            <!-- Full Width Column -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>Columns</h1>
+                </section>
+                <!-- Main content -->
+                <section class="content">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                            <h3 class="box-title">Columns</h3>
+                        </div>
+                        <div class="box-body">
+                            <table id="column_table" class="table table-bordered table-striped dataTable" role="grid">
+                                <thead align='left'>
+                                    <tr>
+                                        <th>Table</th>
+                                        <th>Type</th>
+                                        <th>Column</th>
+                                        <th>Type</th>
+                                        <th>Size</th>
+                                        <th title='Are nulls allowed?'>Nullable</th>
+                                        <th title='Is column automatically updated?'>Auto</th>
+                                        <th title='Default value'>Default</th>
+                                        <th title='Comments' class="toggle"><span>Comments</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <script>
+                    var tableData = [
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Internal OurAirports integer identifier for the runway. This will stay persistent, even if the runway numbering changes<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "he_latitude_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Latitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is north), if available.<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>name",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The name of the navaid, excluding its type.<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "magnetic_variation_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The actual magnetic variation at the navaids location. Positive means east (added to the true direction), and negative means west (subtracted from the true direction).<\/p>"
+    },
+    {
+        "tableName": "routes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "airline",
+        "type": "VARCHAR",
+        "length": 2,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>2-letter (IATA) or 3-letter (ICAO) code of the airline<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Internal OurAirports integer identifier for the airport. This will stay persistent, even if the airport code changes<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "keywords",
+        "type": "VARCHAR",
+        "length": 1024,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Extra keywords/phrases to assist with search, comma-separated. May include former names for the airport, alternate codes, names in other languages, nearby tourist destinations, etc.<\/p>"
+    },
+    {
+        "tableName": "airport_freq",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "airport_id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Internal integer foreign key matching the id column for the associated airport in airports (airport_ident is a better alternative.)<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "he_elevation_ft",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Longitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is east), if available<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "ident",
+        "type": "VARCHAR",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The 1-3 character identifer that the navaid transmits<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "slaved_variation_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The magnetic variation adjustment built into a VORs, VOR-DMEs, or TACANs radials. Positive means east (added to the true direction), and negative means west (subtracted from the true direction). This will not usually be the same as magnetic-variation because the magnetic pole is constantly in motion.<\/p>"
+    },
+    {
+        "tableName": "routes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "dest_airport",
+        "type": "VARCHAR",
+        "length": 3,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>3-letter (IATA) or 4-letter (ICAO) code of the destination airport<\/p>"
+    },
+    {
+        "tableName": "routes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "codeshare",
+        "type": "VARCHAR",
+        "length": 1,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Y if this flight is a codeshare (that is, not operated by Airline, but another carrier), empty otherwise.<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "width_ft",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Width of the runway surface in feet.<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "le_heading_degt",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Heading of the low-numbered end of the runway in degrees true (not magnetic).<\/p>"
+    },
+    {
+        "tableName": "regions",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>iso_country",
+        "type": "VARCHAR",
+        "length": 2,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The two-character ISO 3166:1-alpha2 code for the country containing the administrative subdivision. A handful of unofficial, non-ISO codes are also in use, such as &ldquo;XK&rdquo; for Kosovo.<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "frequency_khz",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The frequency of the navaid in kilohertz. If the Navaid operates on the VHF band (VOR, VOR-DME) or operates on the UHF band with a paired VHF frequency (DME, TACAN, VORTAC), the you need to divide this number by 1,000 to get the frequency in megahertz (115.3 MHz in this example). For an NDB or NDB-DME, you can use this frequency directly.<\/p>"
+    },
+    {
+        "tableName": "regions",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>name",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The common English-language name for the administrative subdivision. In some cases, the name in local languages will appear in the keywords field assist search.<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "dme_longitude_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The longitude of the associated DME in decimal degrees (negative for west). If missing, assume that the value is the same as longitude_deg<\/p>"
+    },
+    {
+        "tableName": "airlines",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "callsign",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Airline callsign<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "length_ft",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Length of the full runway surface (including displaced thresholds, overrun areas, etc) in feet.<\/p>"
+    },
+    {
+        "tableName": "regions",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "local_code",
+        "type": "VARCHAR",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The local code for the administrative subdivision. Whenever possible, these are official ISO 3166:2, at the highest level available, but in some cases OurAirports has to use unofficial codes. There is also a pseudo code &ldquo;U-A&rdquo; for each country, which means that the airport has not yet been assigned to a region (or perhaps cant be, as in the case of a deep-sea oil platform).<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "le_longitude_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Longitude of the centre of the low-numbered end of the runway, in decimal degrees (positive is east), if available.<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>name",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The official airport name, including Airport, Airstrip, etc<\/p>"
+    },
+    {
+        "tableName": "airlines",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "country",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Country or territory where airport is located. See Countries to cross-reference to ISO 3166-1 codes<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "le_location",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": ""
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "dme_elevation_ft",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The associated DME transmitters elevation MSL in feet. If missing, assume that its the same value as elevation_ft.<\/p>"
+    },
+    {
+        "tableName": "regions",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "continent",
+        "type": "VARCHAR",
+        "length": 2,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>A code for the continent to which the region belongs. See the continent field in airports for a list of codes.<\/p>"
+    },
+    {
+        "tableName": "routes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "airline_id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Unique OpenFlights identifier for airline (see Table Airlines)<\/p>"
+    },
+    {
+        "tableName": "routes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "dest_airport_id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Unique OpenFlights identifier for destination airport (see Table Airports)<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "airport_id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Internal integer foreign key matching the id column for the associated airport in airports.csv. (airport_ident is a better alternative.)<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "municipality",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The primary municipality that the airport serves (when available). Note that this is not necessarily the municipality where the airport is physically located.<\/p>"
+    },
+    {
+        "tableName": "airlines",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "alias",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Alias of the airline. For example, All Nippon Airways is commonly known as ANA<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "power",
+        "type": "VARCHAR",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The power-output level of the navaid. Options include &ldquo;HIGH&rdquo;, &ldquo;MEDIUM&rdquo;, &ldquo;LOW&rdquo;, and &ldquo;UNKNOWN&rdquo;.<\/p>"
+    },
+    {
+        "tableName": "routes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "source_airport_id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Unique OpenFlights identifier for source airport (see Table Airports)<\/p>"
+    },
+    {
+        "tableName": "airlines",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>name",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Name of the airline<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "dme_latitude_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The latitude of the associated DME in decimal degrees (negative for south). If missing, assume that the value is the same as latitude_deg.<\/p>"
+    },
+    {
+        "tableName": "regions",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "keywords",
+        "type": "VARCHAR",
+        "length": 1024,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>A comma-separated list of keywords to assist with search. May include former names for the region, and/or the region name in other languages.<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Internal OurAirports integer identifier for the navaid. This will stay persistent, even if the navaid identifier or frequency changes<\/p>"
+    },
+    {
+        "tableName": "routes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "source_airport",
+        "type": "VARCHAR",
+        "length": 3,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>3-letter (IATA) or 4-letter (ICAO) code of the source airport<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "longitude_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The longitude of the navaid in decimal degrees (negative for west).<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "location",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": ""
+    },
+    {
+        "tableName": "countries",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "continent",
+        "type": "VARCHAR",
+        "length": 2,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The code for the continent where the country is (primarily) located. See the continent code in airports for allowed values.<\/p>"
+    },
+    {
+        "tableName": "regions",
+        "tableType": "Table",
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Internal OurAirports integer identifier for the region. This will stay persistent, even if the region code changes.<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "closed",
+        "type": "BIT",
+        "length": 1,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>1 if the runway surface is currently closed, 0 otherwise<\/p>"
+    },
+    {
+        "tableName": "airlines",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "active",
+        "type": "VARCHAR",
+        "length": 1,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "\"N\"",
+        "comments": "<p>Y if the airline is or has until recently been operational, N if it is defunct. This field is not reliable: in particular, major airlines that stopped flying long ago, but have not had their IATA code reassigned (eg. Ansett/AN), will incorrectly show as Y<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>iso_country",
+        "type": "VARCHAR",
+        "length": 2,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The two-character ISO 3166:1-alpha2 code for the country that operates the navaid. A handful of unofficial, non-ISO codes are also in use, such as &ldquo;XK&rdquo; for Kosovo<\/p>"
+    },
+    {
+        "tableName": "routes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "stops",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Number of stops on this flight (0 for direct)<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>associated_airport",
+        "type": "VARCHAR",
+        "length": 7,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The OurAirports text identifier (usually the ICAO code) for an airport associated with the navaid. Links to the ident column in airports<\/p>"
+    },
+    {
+        "tableName": "countries",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "wikipedia_link",
+        "type": "VARCHAR",
+        "length": 1024,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Link to the Wikipedia article about the country.<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "indexedColumn",
+        "keyTitle": "Indexed",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>ident",
+        "type": "VARCHAR",
+        "length": 7,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The text identifier used in the OurAirports URL. This will be the ICAO code if available. Otherwise, it will be a local airport code (if no conflict), or if nothing else is available, an internally-generated code starting with the ISO2 country code, followed by a dash and a four-digit number<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>airport_ident",
+        "type": "VARCHAR",
+        "length": 8,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Externally-visible string foreign key matching the ident column for the associated airport in airports<\/p>"
+    },
+    {
+        "tableName": "airport_freq",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "type",
+        "type": "VARCHAR",
+        "length": 25,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>A code for the frequency type. This isnt (currently) a controlled vocabulary, but probably will be soon. Some common values are &ldquo;TWR&rdquo; (tower), &ldquo;ATF&rdquo; or &ldquo;CTAF&rdquo; (common traffic frequency), &ldquo;GND&rdquo; (ground control), &ldquo;RMP&rdquo; (ramp control), &ldquo;ATIS&rdquo; (automated weather), &ldquo;RCO&rdquo; (remote radio outlet), &ldquo;ARR&rdquo; (arrivals), &ldquo;DEP&rdquo; (departures), &ldquo;UNICOM&rdquo; (monitored ground station), and &ldquo;RDO&rdquo; (a flight-service station).<\/p>"
+    },
+    {
+        "tableName": "regions",
+        "tableType": "Table",
+        "keyClass": "indexedColumn",
+        "keyTitle": "Indexed",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>code",
+        "type": "VARCHAR",
+        "length": 7,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>local_code prefixed with the country code to make a globally-unique identifier.<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "surface",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Code for the runway surface type. This is not yet a controlled vocabulary, but probably will be soon. Some common values include &ldquo;ASP&rdquo; (asphalt), &ldquo;TURF&rdquo; (turf), &ldquo;CON&rdquo; (concrete), &ldquo;GRS&rdquo; (grass), &ldquo;GRE&rdquo; (gravel), &ldquo;WATER&rdquo; (water), and &ldquo;UNK&rdquo; (unknown).<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "he_ident",
+        "type": "VARCHAR",
+        "length": 6,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Identifier for the high-numbered end of the runway.<\/p>"
+    },
+    {
+        "tableName": "regions",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "wikipedia_link",
+        "type": "VARCHAR",
+        "length": 1024,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>A link to the Wikipedia article describing the subdivision<\/p>"
+    },
+    {
+        "tableName": "countries",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>name",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The common English-language name for the country. Other variations of the name may appear in the keywords field to assist with search.<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "gps_code",
+        "type": "VARCHAR",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The code that an aviation GPS database (such as Jeppesens or Garmins) would normally use for the airport. This will always be the ICAO code if one exists. Note that, unlike the ident column, this is not guaranteed to be globally unique<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "he_heading_degt",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Heading of the high-numbered end of the runway in degrees true (not magnetic)<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "lighted",
+        "type": "BIT",
+        "length": 1,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>1 if the surface is lighted at night, 0 otherwise. (Note that this is inconsistent with airports.csv, which uses &ldquo;yes&rdquo; and &ldquo;no&rdquo; instead of 1 and 0.)<\/p>"
+    },
+    {
+        "tableName": "airport_freq",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>airport_ident",
+        "type": "VARCHAR",
+        "length": 8,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Externally-visible string foreign key matching the ident column for the associated airport in airports<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "iata_code",
+        "type": "VARCHAR",
+        "length": 3,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The three-letter IATA code for the airport (if it has one)<\/p>"
+    },
+    {
+        "tableName": "planes",
+        "tableType": "Table",
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>name",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Full name of the aircraft<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "filename",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>This is a unique string identifier constructed from the navaid name and country, and used in the OurAirports URL<\/p>"
+    },
+    {
+        "tableName": "airlines",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "icao",
+        "type": "VARCHAR",
+        "length": 3,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>3-letter ICAO code, if available<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "elevation_ft",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The navaids elevation MSL in feet (not metres).<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "elevation_ft",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The airport elevation MSL in feet (not metres)<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "he_displaced_threshold_ft",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Length of the displaced threshold (if any) for the high-numbered end of the runway, in feet<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "le_ident",
+        "type": "VARCHAR",
+        "length": 6,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Identifier for the low-numbered end of the runway.<\/p>"
+    },
+    {
+        "tableName": "planes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "icao",
+        "type": "VARCHAR",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Unique four-letter ICAO identifier for the aircraft<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "he_location",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": ""
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "latitude_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The airport latitude in decimal degrees (positive for north)<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "scheduled_service",
+        "type": "BIT",
+        "length": 1,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>&ldquo;yes&rdquo; if the airport currently has scheduled airline service; &ldquo;no&rdquo; otherwise<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "dme_channel",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The DME channel (an alternative way of tuning distance-measuring equipment)<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "continent",
+        "type": "VARCHAR",
+        "length": 2,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The code for the continent where the airport is (primarily) located. Allowed values are AF (Africa), AN (Antarctica), AS (Asia), EU (Europe), NA (North America), OC (Oceania), or SA (South America)<\/p>"
+    },
+    {
+        "tableName": "airlines",
+        "tableType": "Table",
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>OpenFlights identifier for this airline<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "local_code",
+        "type": "VARCHAR",
+        "length": 7,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The local country code for the airport, if different from the gps_code and iata_code fields (used mainly for US airports)<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "le_displaced_threshold_ft",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Length of the displaced threshold (if any) for the low-numbered end of the runway, in feet.<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "usagetype",
+        "type": "VARCHAR",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The primary function of the navaid in the airspace system. Options include &ldquo;HI&rdquo; (high-altitude airways, at or above flight level 180), &ldquo;LO&rdquo; (low-altitude airways), &ldquo;BOTH&rdquo; (high- and low-altitude airways), &ldquo;TERM&rdquo; (terminal-area navigation only), and &ldquo;RNAV&rdquo; (non-GPS area navigation)<\/p>"
+    },
+    {
+        "tableName": "airport_freq",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "frequency_mhz",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Radio voice frequency in megahertz. Note that the same frequency may appear multiple times for an airport, serving different functions.<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "dme_frequency_khz",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The paired VHF frequency for the DME (or TACAN) in kilohertz. Divide by 1,000 to get the paired VHF frequency in megahertz (e.g. 115.3 MHz).<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "home_link",
+        "type": "VARCHAR",
+        "length": 1024,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>URL of the airports official home page on the web, if one exists<\/p>"
+    },
+    {
+        "tableName": "countries",
+        "tableType": "Table",
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Internal OurAirports integer identifier for the country. This will stay persistent, even if the country name or code changes.<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "type",
+        "type": "VARCHAR",
+        "length": 25,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The type of the airport. Allowed values are closed_airport, heliport, large_airport, medium_airport, seaplane_base, and small_airport. See the map legend for a definition of each type<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "type",
+        "type": "VARCHAR",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The type of the navaid. Options are &ldquo;DME&rdquo;, &ldquo;NDB&rdquo;, &ldquo;NDB-DME&rdquo;, &ldquo;TACAN&rdquo;, &ldquo;VOR&rdquo;, &ldquo;VOR-DME&rdquo;, or &ldquo;VORTAC&rdquo;. See the map legend for more information about each type<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "wikipedia_link",
+        "type": "VARCHAR",
+        "length": 1024,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>URL of the airports page on Wikipedia, if one exists<\/p>"
+    },
+    {
+        "tableName": "planes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "iata",
+        "type": "VARCHAR",
+        "length": 3,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Unique three-letter IATA identifier for the aircraft<\/p>"
+    },
+    {
+        "tableName": "airlines",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "iata",
+        "type": "VARCHAR",
+        "length": 2,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>2-letter IATA code, if available<\/p>"
+    },
+    {
+        "tableName": "countries",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "keywords",
+        "type": "VARCHAR",
+        "length": 1024,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>A comma-separated list of search keywords/phrases related to the country.<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>iso_country",
+        "type": "VARCHAR",
+        "length": 2,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The two-character ISO 3166:1-alpha2 code for the country where the airport is (primarily) located. A handful of unofficial, non-ISO codes are also in use, such as &ldquo;XK&rdquo; for Kosovo<\/p>"
+    },
+    {
+        "tableName": "airport_freq",
+        "tableType": "Table",
+        "keyClass": "primaryKey",
+        "keyTitle": "Primary Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>id",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Internal OurAirports integer identifier for the frequency. This will stay persistent, even if the radio frequency or description changes<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "le_latitude_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Latitude of the centre of the low-numbered end of the runway, in decimal degrees (positive is north), if available.<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "longitude_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The airport longitude in decimal degrees (positive for east)<\/p>"
+    },
+    {
+        "tableName": "navaids",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "latitude_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The latitude of the navaid in decimal degrees (negative for south).<\/p>"
+    },
+    {
+        "tableName": "airports",
+        "tableType": "Table",
+        "keyClass": "foreignKey",
+        "keyTitle": "Foreign Key",
+        "name": "<i class='icon ion-key iconkey' style='padding-left: 5px;'><\/i>iso_region",
+        "type": "VARCHAR",
+        "length": 7,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>An alphanumeric code for the high-level administrative subdivision of a country where the airport is primarily located (e.g. province, governorate), prefixed by the ISO2 country code and a hyphen. OurAirports uses ISO 3166:2 codes whenever possible, preferring higher administrative levels, but also includes some custom codes. See the documentation for regions.csv.<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "le_elevation_ft",
+        "type": "INTEGER",
+        "length": 4,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Elevation above MSL of the low-numbered end of the runway in feet.<\/p>"
+    },
+    {
+        "tableName": "countries",
+        "tableType": "Table",
+        "keyClass": "indexedColumn",
+        "keyTitle": "Indexed",
+        "name": "<i class='fa fa-sitemap fa-rotate-120' style='padding-right: 5px;'><\/i>code",
+        "type": "VARCHAR",
+        "length": 2,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>The two-character ISO 3166:1-alpha2 code for the country. A handful of unofficial, non-ISO codes are also in use, such as &ldquo;XK&rdquo; for Kosovo. The iso_country field in airports.csv points into this column.<\/p>"
+    },
+    {
+        "tableName": "routes",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "equipment",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>3-letter codes for plane type(s) generally used on this flight, separated by spaces<\/p>"
+    },
+    {
+        "tableName": "airport_freq",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "description",
+        "type": "VARCHAR",
+        "length": 255,
+        "nullable": "",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>A description of the frequency, typically the way a pilot would open a call on it<\/p>"
+    },
+    {
+        "tableName": "runways",
+        "tableType": "Table",
+        "keyClass": "",
+        "keyTitle": "",
+        "name": "he_longitude_deg",
+        "type": "DOUBLE",
+        "length": 8,
+        "nullable": "√",
+        "autoUpdated": "",
+        "defaultValue": "null",
+        "comments": "<p>Longitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is east), if available<\/p>"
+    }
+];
+                    var config = {
+                        pagination: true
+                    };
+                </script>
+            </div>
+            <!-- /.content-wrapper -->
+            <footer class="main-footer">
+                <div>
+                    <div class="pull-right hidden-xs">
+                        <a href="https://github.com/schemaspy/schemaspy" title="GitHub for SchemaSpy"><i class="fa fa-github-square fa-2x"></i></a>
+                        <a href="http://stackoverflow.com/questions/tagged/schemaspy" title="StackOverflow for SchemaSpy"><i class="fa fa-stack-overflow fa-2x"></i></a>
+                    </div>
+                    <strong>Generated by <a href="http://schemaspy.org/" class="logo-text"><i class="fa fa-database"></i> SchemaSpy 6.1.0</a></strong>
+                </div>
+                <!-- /.container -->
+            </footer>
+        </div>
+        <!-- ./wrapper -->
+
+        <!-- jQuery 2.2.3 -->
+        <script src="bower/admin-lte/plugins/jQuery/jquery-2.2.3.min.js"></script>
+        <script src="bower/admin-lte/plugins/jQueryUI/jquery-ui.min.js"></script>
+        <!-- Bootstrap 3.3.5 -->
+        <script src="bower/admin-lte/bootstrap/js/bootstrap.min.js"></script>
+        <!-- DataTables -->
+        <script src="bower/datatables.net/jquery.dataTables.min.js"></script>
+        <script src="bower/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+        <script src="bower/datatables.net-buttons/dataTables.buttons.min.js"></script>
+        <script src="bower/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+        <script src="bower/datatables.net-buttons/buttons.html5.min.js"></script>
+        <script src="bower/datatables.net-buttons/buttons.print.min.js"></script>
+        <script src="bower/datatables.net-buttons/buttons.colVis.min.js"></script>
+        <!-- SheetJS -->
+        <script src="bower/js-xlsx/xlsx.full.min.js"></script>
+        <!-- pdfmake -->
+        <script src="bower/pdfmake/pdfmake.min.js"></script>
+        <script src="bower/pdfmake/vfs_fonts.js"></script>
+        <!-- SlimScroll -->
+        <script src="bower/admin-lte/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+        <!-- FastClick -->
+        <script src="bower/admin-lte/plugins/fastclick/fastclick.js"></script>
+        <!-- Salvattore -->
+        <script src="bower/salvattore/salvattore.min.js"></script>
+        <!-- AnchorJS -->
+        <script src="bower/anchor-js/anchor.min.js"></script>
+        <!-- CodeMirror -->
+        <script src="bower/codemirror/codemirror.js"></script>
+        <script src="bower/codemirror/sql.js"></script>
+        <!-- AdminLTE App -->
+        <script src="bower/admin-lte/dist/js/app.min.js"></script>
+        <script src="column.js"></script>
+        <script src="schemaSpy.js"></script>
+    </body>
+</html>
