@@ -22,13 +22,13 @@ The data comes from ourairports.com and openflights.org.
 The openflights.org website makes the data available under the Open Database License. For details please see: https://openflights.org/data.html#license
 The ourairports.com website makes the data from there available to the Public Domain. The data comes with no guarantee of accuracy or fitness for use. 
 
-### Data from: https://openflights.org/data.html
+#### Data from: https://openflights.org/data.html
 The "dat"-files are simple text files
 * airlines.dat file contains information on airlines
 * routes.dat file contains routes between airports and airlines
 * planes.dat file contains aircrafts with IATA and/or ICAO codes
 
-### Data from: https://ourairports.com/help/data-dictionary.html https://github.com/davidmegginson/ourairports-data
+#### Data from: https://ourairports.com/help/data-dictionary.html https://github.com/davidmegginson/ourairports-data
 The "csv"-files are simple text files
 * airports.csv - Each row represents the record for a single airport.
 * airport_freq.csv - Each row represents a single airport radio frequency for voice communication (radio navigation aids appear in navaids.csv). 
@@ -37,7 +37,7 @@ The "csv"-files are simple text files
 * navaids.csv - Each row represents a single radio navigation. 
 * regions.csv - Each row represents a high-level administrative subdivision of a country. 
 
-## State of loading
+#### State of loading
 
 * :heavy_check_mark: airlines.dat (6.162 of 6.162 rows loaded)
 * :heavy_check_mark: airport_freq.csv (28.969 of 28.969 rows loaded)
@@ -46,25 +46,22 @@ The "csv"-files are simple text files
 * :heavy_check_mark: navaids.csv (11.020 of 11.020 rows loaded)
 * :heavy_check_mark: planes.dat (246 of 246 rows loaded)
 * :heavy_check_mark: regions.csv (3.964 of 3.964 rows loaded)
-* :heavy_check_mark: routes.dat (667.663 of 67.663 rows loaded)
+* :heavy_check_mark: routes.dat (67.663 of 67.663 rows loaded)
 * :heavy_check_mark: runways.csv (42.932 of  rows 42.932 loaded)
 
-You find the raw data files within docker container in folder: /opt/irisbuild/data/
+You find the raw data files within docker container in folder: /opt/irisbuild/data for your own tests with the LOAD DATA command. The sql statements that are used to load the data for this project can be found in file [/src/ddl/02_create_db_model.sql](/src/ddl/02_create_db_model.sql)
 
-## Visual representation of the data model
+## Documentation details about the data model
 
- The Tables are created in SCHEMA dc_data_flights. The tables were named according to the files from which the data originated.
+ The Tables are created in Namespace *OPENFLIGHTS* with SCHEMA *dc_data_flights*. The tables were named according to the files from which the data originated.
 
 You found more details about the content of the tables and columns within the database. The IRIS CREATE TABLE *%DESCRIPTION* option was used for the purpose to document the datamodel.
 ![all tables and row counts](/doc/datamodel_remarks.png)
 
-
-FKs are not all set... cause of data inconsistencies, indices are still missing
-... stay tune
-
+These are the tables in this model
 ![all tables and row counts](/doc/datamodel.png)
 
-## data model documentation in folder /doc/dbdoc
+### Browsable db documentation in folder /doc/dbdoc
 
 In the folder /doc/dbdoc you will find a complete html based documentation of the data model. The documentation contains details about table and column names as well as data types and relationships. To use the documentation, simply open the file /doc/dbdoc/index.html with a webbroser: [See here](/doc/dbdoc/index.html)
 
@@ -109,10 +106,37 @@ By default the Container ports  [![Docker-ports](https://img.shields.io/badge/dy
 docker-compose up -d
 ```
 
-## Some usful links
+## Using and testing the datamodel
 
-This is a article-post on community.intersystems.com related to this github repo: https://community.intersystems.com/post/tips-and-tricks-brand-new-load-data-command
+Now that the container is running, you should be able to create a connection to the management portal or just create a database connection with your favorite sql query tool.
 
-As described on this post, I had problems creating and populating the tables via DDL script in IRIS. Unfortunately *$SYSTEM.SQL.Schema.ImportDDL* does not support many SQL statements, e.g. USE DATABASE or LOAD DATA.
+ The JDBC URL should be looks like: jdbc:IRIS://localhost:1972/OPENFLIGHTS
+
+ You can use User: _SYSTEM with pwd: SYS
+
+ ![JDBC connection](/doc/connection_sql_query_tool.png)
+
+
+After this you should be able to query the OPENFLIGHTS namespace as you wish. [Here](/src/sql/dev_some_queries.sql) are some example queries: [/src/sql/dev_some_queries.sql](/src/sql/dev_some_queries.sql)  
+
+ ![Query the database](/doc/sqldatalens_show_fk_targets.gif)
+
+
+## Some usful details and links
+
+### how are the ddl's are executed
+ This is a article-post on community.intersystems.com related to this github repo: https://community.intersystems.com/post/tips-and-tricks-brand-new-load-data-command As described on this post, I had problems creating and populating the tables via DDL script in IRIS. Unfortunately *$SYSTEM.SQL.Schema.ImportDDL* does not support many SQL statements, e.g. USE DATABASE or LOAD DATA.
 Fortunately Benjamin De Boe (https://github.com/bdeboe) had a solution in one of his repositories :-)
 The IRIS class file /src/cls/Utils.cls and within the Openflights.Utils.RunDDL method based on his https://github.com/bdeboe/isc-adventureworks/blob/main/src/cls/AdventureWorks/Utils.cls file. I've just changed the statement delimiter from ";" to "GO". Thanks Benjamin!
+
+### what is in folder /sql ?
+
+While working with the data and developing this project, some scripts were created. 
+
+* dev_add_fks.sql - based on the documentation the FKs are defined, but not all are currently there cause of data inconsistencies 
+
+* dev_check_sql_diag.sql - with queries in this file the LOAD DATA state can be checked and analyzed
+* dev_drop_tables.sql - ... as the name says
+* dev_some_queries.sql - just some queries to work with the datamodel
+
+[![Gitter](https://img.shields.io/badge/Available%20on-Intersystems%20Open%20Exchange-00b2a9.svg)](https://openexchange.intersystems.com/package/openflights_dataset)

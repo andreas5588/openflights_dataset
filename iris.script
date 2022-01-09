@@ -1,7 +1,7 @@
-; this loads the class into USER namespace
+; this loads the utility class into USER namespace
 DO $SYSTEM.OBJ.Load("/opt/irisbuild/src/cls/Utils.cls", "ck")
 
-; set the encoding of the external language server for java to avoid unicodeproblems by using LOAD DATA sql command
+; set the encoding of the external language server for java to avoid unicode problems by using LOAD DATA sql command
 set srv = $system.external.getServer("%Java Server")
 set srv.JVMArgs = "-Dfile.encoding=UTF-8"
 set modifiedserver = $system.external.modifyServer(srv)
@@ -13,6 +13,7 @@ DO $SYSTEM.SQL.Schema.ImportDDL("/opt/irisbuild/src/ddl/01_create_db.sql","/opt/
 ;DO $SYSTEM.SQL.Schema.ImportDDL("/opt/irisbuild/src/ddl/02_create_db_model.sql","/opt/irisbuild/02_ddl_errors.log","IRIS")
 
 ; execute the ddl statemens - the first statement in the file is: USE DATABASE openflights
+; the utility class is used for load cause of the used sql command
 DO ##class(Openflights.Utils).RunDDL("/opt/irisbuild/src/ddl/02_create_db_model.sql",,0,1)
 
 halt
