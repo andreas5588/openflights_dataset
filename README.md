@@ -61,9 +61,12 @@ You found more details about the content of the tables and columns within the da
 These are the tables in this model
 ![all tables and row counts](/doc/datamodel.png)
 
-### Browsable db documentation in folder /doc/dbdoc
+### Browsable db documentation in folder http://localhost:52773/csp/openflights/index.html
 
-In the folder /doc/dbdoc you will find a complete html based documentation of the data model. The documentation contains details about table and column names as well as data types and relationships. To use the documentation, simply open the file /doc/dbdoc/index.html with a webbroser: [See here](/doc/dbdoc/index.html)
+In the folder /doc/dbdoc you will find a complete html based documentation of the data model. The documentation contains details about table and column names as well as data types and relationships. To use the documentation, simply open the file /doc/dbdoc/index.html with a webbroser.
+
+If the container is up and running then the documentation is available via the IRIS webserver: [http://localhost:52773/csp/openflights/index.html](http://localhost:52773/csp/openflights/index.html)
+
 
 This is a screenshot of the entry page
 

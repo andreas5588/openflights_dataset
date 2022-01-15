@@ -9,6 +9,7 @@ USER ${ISC_PACKAGE_MGRUSER}
 
 COPY data data
 COPY src src
+COPY doc doc
 COPY iris.script iris.script
 
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
