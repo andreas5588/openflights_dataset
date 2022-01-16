@@ -15,6 +15,8 @@ With this example project you have at least two use cases:
 See and evaluate the using of LOAD DATA 
 or just explore the openflights datamodel
 
+To see this dataset in action with Apache Zeppelin please check this repo: https://github.com/andreas5588/openflights_demo
+
 ## Data in this model
 
 The data comes from ourairports.com and openflights.org. 
