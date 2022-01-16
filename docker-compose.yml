@@ -1,9 +1,10 @@
 version: '3.8'
 services:
   iris:
-    container_name: iris-openflights
+    container_name: openflights-iris
     init: true
     build: .
+    image: andreasschneiderixdbde/openflights-iris
     restart: always
     ports: 
       - "1972:1972"
@@ -11,4 +12,4 @@ services:
       - "53773:53773"      
     volumes:
       - ./:/opt/irisbuild
-      - ./doc/dbdoc:/opt/irisapp/csp
+      - ./doc/dbdoc:/opt/irisapp/csp    

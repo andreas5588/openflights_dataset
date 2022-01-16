@@ -19,6 +19,9 @@ docker-compose down
 
 docker-compose exec iris iris session iris
 
+docker exec -it my-iris iris session IRIS
+
+
 write $system.external.getServer("%Java Server").%ToJSON()
 
 set srv = $system.external.getServer("%Java Server")
