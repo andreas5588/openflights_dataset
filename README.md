@@ -84,7 +84,24 @@ Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installi
 
 ## Installation
 
-To start working with this datamodel do the following:
+To start working with this datamodel you have two options:
+
+* Pull the ready build container from hub.docker
+* Build your own container from source based in this repo
+
+### Pull from hub.docker
+
+```shell
+docker run --rm -d -p 1972:1972 -p 52773:52773 andreasschneiderixdbde/openflights-iris
+```
+
+Thats it! Now you can work with INterSystems IRIS and the Openflights-Database
+* Open the Management Portal: http://localhost:52773/csp/sys/UtilHome.csp
+* Connect via JDBC with this URL: jdbc:IRIS://localhost:1972/OPENFLIGHTS
+* Browse the datamodel documentation: http://localhost:52773/csp/openflights/index.html
+
+
+### Build from source in this repo
 
 1. Clone/git pull the repo into any local directory
 
@@ -98,9 +115,7 @@ git clone https://github.com/andreas5588/openflights_dataset.git
 docker-compose build
 ```
 
-By default the Container ports  [![Docker-ports](https://img.shields.io/badge/dynamic/yaml?color=blue&label=docker-compose&prefix=ports%20-%20&query=%24.services.iris.ports&url=https%3A%2F%2Fraw.githubusercontent.com%2Fandreas5588%2Fopenflights_dataset%2Fmaster%2Fdocker-compose.yml)](https://raw.githubusercontent.com/andreas5588/openflights_dataset/master/docker-compose.yml)
-
- are mapped to the same local ports. Please check the availability of the ports on your maschine first.
+By default the Container ports  [![Docker-ports](https://img.shields.io/badge/dynamic/yaml?color=blue&label=docker-compose&prefix=ports%20-%20&query=%24.services.iris.ports&url=https%3A%2F%2Fraw.githubusercontent.com%2Fandreas5588%2Fopenflights_dataset%2Fmaster%2Fdocker-compose.yml)](https://raw.githubusercontent.com/andreas5588/openflights_dataset/master/docker-compose.yml) are mapped to the same local ports. Please check the availability of the ports on your maschine first.
 
 
 3. Run the iris-openflight container with the datamodel:
