@@ -33,4 +33,6 @@ Set tSC = ##class(Security.Applications).Create(webAppName, .webProperties)
 
 write "Web application "_webAppName_" has been created!",!
 
+DO ##class(Security.Users).UnExpireUserPasswords("*")
+
 halt
