@@ -8,7 +8,7 @@ This is a demo dataset\datamodel for InterSystems IRIS. This model is build for 
 
 The data used by this datamodel are based on datasets from ourairports.com and openflights.org 
 
-To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2021.2.0.617 (preview) is used. Details about the new SQL command can be found here: https://docs.intersystems.com/iris20212/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
+To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2022.1.0.114.0 (preview) is used. Details about the new SQL command can be found here: https://irisdocs.intersystems.com/iris20221/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
 
 With this example project you have at least two use cases:
 
@@ -97,7 +97,7 @@ To start working with this datamodel you have two options:
 docker run --rm -d -p 1972:1972 -p 52773:52773 andreasschneiderixdbde/openflights-iris
 ```
 
-Thats it! Now you can work with INterSystems IRIS and the Openflights-Database
+Thats it! Now you can work with InterSystems IRIS and the Openflights-Database
 * Open the Management Portal: http://localhost:52773/csp/sys/UtilHome.csp
 * Connect via JDBC with this URL: jdbc:IRIS://localhost:1972/OPENFLIGHTS
 * Browse the datamodel documentation: http://localhost:52773/csp/openflights/index.html
