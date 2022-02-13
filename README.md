@@ -10,12 +10,69 @@ The data used by this datamodel are based on datasets from ourairports.com and o
 
 To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2022.1.0.114.0 (preview) is used. Details about the new SQL command can be found here: https://irisdocs.intersystems.com/iris20221/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
 
-With this example project you have at least two use cases:
-
-See and evaluate the using of LOAD DATA 
-or just explore the openflights datamodel
-
+With this example project you have at least two use cases: See and evaluate the using of LOAD DATA or just explore the openflights datamodel
 To see this dataset in action with Apache Zeppelin please check this repo: https://github.com/andreas5588/openflights_demo
+
+## Installation
+
+To start working with this datamodel you have two options:
+
+* Pull the ready build container from hub.docker
+* Build your own container from source based in this repo
+
+### Pull from hub.docker
+
+```shell
+docker run --rm -d -p 1972:1972 -p 52773:52773 andreasschneiderixdbde/openflights-iris
+```
+
+Thats it! Now you can work with InterSystems IRIS and the Openflights-Database
+* Open the Management Portal: http://localhost:52773/csp/sys/UtilHome.csp
+* Connect via JDBC with this URL: jdbc:IRIS://localhost:1972/OPENFLIGHTS
+* Browse the datamodel documentation: http://localhost:52773/csp/openflights/index.html
+
+
+### Build from source in this repo
+
+Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
+
+1. Clone/git pull the repo into any local directory
+
+```shell
+git clone https://github.com/andreas5588/openflights_dataset.git
+```
+
+2. Open the console in this directory and run:
+
+```shell
+docker-compose build
+```
+
+By default the Container ports  [![Docker-ports](https://img.shields.io/badge/dynamic/yaml?color=blue&label=docker-compose&prefix=ports%20-%20&query=%24.services.iris.ports&url=https%3A%2F%2Fraw.githubusercontent.com%2Fandreas5588%2Fopenflights_dataset%2Fmaster%2Fdocker-compose.yml)](https://raw.githubusercontent.com/andreas5588/openflights_dataset/master/docker-compose.yml) are mapped to the same local ports. Please check the availability of the ports on your maschine first.
+
+
+3. Run the iris-openflight container with the datamodel:
+
+```shell
+docker-compose up -d
+```
+
+## Using and testing the datamodel
+
+Now that the container is running, you should be able to create a connection to the management portal or just create a database connection with your favorite sql query tool.
+
+ The JDBC URL should be looks like: jdbc:IRIS://localhost:1972/OPENFLIGHTS
+
+ You can use User: _SYSTEM with pwd: SYS
+
+ ![JDBC connection](/doc/connection_sql_query_tool.png)
+
+
+After this you should be able to query the OPENFLIGHTS namespace as you wish. [Here](/src/sql/dev_some_queries.sql) are some example queries: [/src/sql/dev_some_queries.sql](/src/sql/dev_some_queries.sql)  
+
+ ![Query the database](/doc/sqldatalens_show_fk_targets.gif)
+
+
 
 ## Data in this model
 
@@ -79,68 +136,6 @@ From each entity you can navigate by relationships to the dependent tables. The 
 ![db documentation](/doc/diagram_doc.png)
 
 The generated documentation contains the explanations stored in the %DESCRIPTION property of tables and columns. With this information it should be easy to explore the data model.
-
-# Prerequisites
-
-Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Docker desktop](https://www.docker.com/products/docker-desktop) installed.
-
-## Installation
-
-To start working with this datamodel you have two options:
-
-* Pull the ready build container from hub.docker
-* Build your own container from source based in this repo
-
-### Pull from hub.docker
-
-```shell
-docker run --rm -d -p 1972:1972 -p 52773:52773 andreasschneiderixdbde/openflights-iris
-```
-
-Thats it! Now you can work with InterSystems IRIS and the Openflights-Database
-* Open the Management Portal: http://localhost:52773/csp/sys/UtilHome.csp
-* Connect via JDBC with this URL: jdbc:IRIS://localhost:1972/OPENFLIGHTS
-* Browse the datamodel documentation: http://localhost:52773/csp/openflights/index.html
-
-
-### Build from source in this repo
-
-1. Clone/git pull the repo into any local directory
-
-```shell
-git clone https://github.com/andreas5588/openflights_dataset.git
-```
-
-2. Open the console in this directory and run:
-
-```shell
-docker-compose build
-```
-
-By default the Container ports  [![Docker-ports](https://img.shields.io/badge/dynamic/yaml?color=blue&label=docker-compose&prefix=ports%20-%20&query=%24.services.iris.ports&url=https%3A%2F%2Fraw.githubusercontent.com%2Fandreas5588%2Fopenflights_dataset%2Fmaster%2Fdocker-compose.yml)](https://raw.githubusercontent.com/andreas5588/openflights_dataset/master/docker-compose.yml) are mapped to the same local ports. Please check the availability of the ports on your maschine first.
-
-
-3. Run the iris-openflight container with the datamodel:
-
-```shell
-docker-compose up -d
-```
-
-## Using and testing the datamodel
-
-Now that the container is running, you should be able to create a connection to the management portal or just create a database connection with your favorite sql query tool.
-
- The JDBC URL should be looks like: jdbc:IRIS://localhost:1972/OPENFLIGHTS
-
- You can use User: _SYSTEM with pwd: SYS
-
- ![JDBC connection](/doc/connection_sql_query_tool.png)
-
-
-After this you should be able to query the OPENFLIGHTS namespace as you wish. [Here](/src/sql/dev_some_queries.sql) are some example queries: [/src/sql/dev_some_queries.sql](/src/sql/dev_some_queries.sql)  
-
- ![Query the database](/doc/sqldatalens_show_fk_targets.gif)
-
 
 ## Some usful details and links
 
