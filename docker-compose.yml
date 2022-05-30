@@ -3,6 +3,7 @@ services:
   iris:
     container_name: openflights-iris
     init: true
+    command: --check-caps false
     build: .
     image: andreasschneiderixdbde/openflights-iris
     restart: always

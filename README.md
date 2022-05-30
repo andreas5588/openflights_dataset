@@ -8,7 +8,7 @@ This is a demo dataset\datamodel for InterSystems IRIS. This model is build for 
 
 The data used by this datamodel are based on datasets from ourairports.com and openflights.org 
 
-To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2022.1.0.114.0 (preview) is used. Details about the new SQL command can be found here: https://irisdocs.intersystems.com/iris20221/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
+To load the CSV files into the database the new LOAD DATA feature of IRIS Version 2022.1.0.199.0 (preview) is used. Details about the new SQL command can be found here: https://irisdocs.intersystems.com/iris20221/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_loaddata
 
 With this example project you have at least two use cases: See and evaluate the using of LOAD DATA or just explore the openflights datamodel
 To see this dataset in action with Apache Zeppelin please check this repo: https://github.com/andreas5588/openflights_demo
