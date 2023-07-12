@@ -57,7 +57,7 @@ CREATE TABLE dc_data_flights.airport_freq
   airport_id int NOT NULL 			%DESCRIPTION 'Internal integer foreign key matching the id column for the associated airport in airports (airport_ident is a better alternative.)',
   airport_ident varchar(8) NOT NULL %DESCRIPTION 'Externally-visible string foreign key matching the ident column for the associated airport in airports',
   type varchar(25) NOT NULL 		%DESCRIPTION 'A code for the frequency type. This isnt (currently) a controlled vocabulary, but probably will be soon. Some common values are "TWR" (tower), "ATF" or "CTAF" (common traffic frequency), "GND" (ground control), "RMP" (ramp control), "ATIS" (automated weather), "RCO" (remote radio outlet), "ARR" (arrivals), "DEP" (departures), "UNICOM" (monitored ground station), and "RDO" (a flight-service station).',
-  description varchar(255) NOT NULL	%DESCRIPTION 'A description of the frequency, typically the way a pilot would open a call on it',
+  description varchar(255)  NULL	%DESCRIPTION 'A description of the frequency, typically the way a pilot would open a call on it',
   frequency_mhz DOUBLE  NOT NULL 	%DESCRIPTION 'Radio voice frequency in megahertz. Note that the same frequency may appear multiple times for an airport, serving different functions.',
   CONSTRAINT id_pk PRIMARY KEY (id)
 )
@@ -333,13 +333,13 @@ GO
 CREATE TABLE dc_data_flights.routes 
 (
 	%DESCRIPTION 'Contains routes between airports and airlines spanning the globe. Data Source: https://openflights.org/data.html',
-	airline           CHAR(2) NOT NULL 	%DESCRIPTION '2-letter (IATA) or 3-letter (ICAO) code of the airline',
-	airline_id        INT NOT NULL 		%DESCRIPTION 'Unique OpenFlights identifier for airline (see Table Airlines)',
-	source_airport    CHAR(3) NOT NULL	%DESCRIPTION '3-letter (IATA) or 4-letter (ICAO) code of the source airport',
-	source_airport_id INT NOT NULL 		%DESCRIPTION 'Unique OpenFlights identifier for source airport (see Table Airports)',
-	dest_airport      CHAR(3) NOT NULL	%DESCRIPTION '3-letter (IATA) or 4-letter (ICAO) code of the destination airport',
-	dest_airport_id   INT NOT NULL		%DESCRIPTION 'Unique OpenFlights identifier for destination airport (see Table Airports)',
-	codeshare         VARCHAR(1) 		%DESCRIPTION 'Y if this flight is a codeshare (that is, not operated by Airline, but another carrier), empty otherwise.',
+	airline           CHAR(3) NOT NULL 	%DESCRIPTION '2-letter (IATA) or 3-letter (ICAO) code of the airline',
+	airline_id        INT NULL 			%DESCRIPTION 'Unique OpenFlights identifier for airline (see Table Airlines)',
+	source_airport    CHAR(4) NOT NULL	%DESCRIPTION '3-letter (IATA) or 4-letter (ICAO) code of the source airport',
+	source_airport_id INT NULL	 		%DESCRIPTION 'Unique OpenFlights identifier for source airport (see Table Airports)',
+	dest_airport      CHAR(4) NOT NULL	%DESCRIPTION '3-letter (IATA) or 4-letter (ICAO) code of the destination airport',
+	dest_airport_id   INT NULL			%DESCRIPTION 'Unique OpenFlights identifier for destination airport (see Table Airports)',
+	codeshare         CHAR(1) 			%DESCRIPTION 'Y if this flight is a codeshare (that is, not operated by Airline, but another carrier), empty otherwise.',
 	stops             INT NOT NULL 		%DESCRIPTION 'Number of stops on this flight (0 for direct)',
 	equipment         VARCHAR(255) 		%DESCRIPTION '3-letter codes for plane type(s) generally used on this flight, separated by spaces'
 )
@@ -347,13 +347,13 @@ GO
 LOAD DATA FROM FILE '/opt/irisbuild/data/routes.dat' 
 COLUMNS 
 (
-  airline           CHAR(2),
+  airline           CHAR(3),
   airline_id        INT,
-  source_airport    CHAR(3),
+  source_airport    CHAR(4),
   source_airport_id INT,
-  dest_airport      CHAR(3),
+  dest_airport      CHAR(4),
   dest_airport_id   INT,
-  codeshare         VARCHAR(1),
+  codeshare         CHAR(1),
   stops             INT,
   equipment         VARCHAR(255)
 )
@@ -394,14 +394,14 @@ CREATE TABLE dc_data_flights.runways
 	surface       				VARCHAR(255)  		%DESCRIPTION 'Code for the runway surface type. This is not yet a controlled vocabulary, but probably will be soon. Some common values include "ASP" (asphalt), "TURF" (turf), "CON" (concrete), "GRS" (grass), "GRE" (gravel), "WATER" (water), and "UNK" (unknown).',
 	lighted       				BIT 				%DESCRIPTION '1 if the surface is lighted at night, 0 otherwise. (Note that this is inconsistent with airports.csv, which uses "yes" and "no" instead of 1 and 0.) ',
 	closed        				BIT 				%DESCRIPTION '1 if the runway surface is currently closed, 0 otherwise',
-	le_ident      				VARCHAR(6) 			%DESCRIPTION 'Identifier for the low-numbered end of the runway.',
+	le_ident      				VARCHAR(7) 			%DESCRIPTION 'Identifier for the low-numbered end of the runway.',
 	le_latitude_deg 			DOUBLE 				%DESCRIPTION 'Latitude of the centre of the low-numbered end of the runway, in decimal degrees (positive is north), if available. ',
 	le_longitude_deg 			DOUBLE 				%DESCRIPTION 'Longitude of the centre of the low-numbered end of the runway, in decimal degrees (positive is east), if available. ',
 	le_location   				DOUBLE 				%DESCRIPTION '',
 	le_elevation_ft 			INT 				%DESCRIPTION 'Elevation above MSL of the low-numbered end of the runway in feet.',
 	le_heading_degt 			DOUBLE 				%DESCRIPTION 'Heading of the low-numbered end of the runway in degrees true (not magnetic).',
 	le_displaced_threshold_ft 	INT 				%DESCRIPTION 'Length of the displaced threshold (if any) for the low-numbered end of the runway, in feet.',
-	he_ident      				VARCHAR(6) 			%DESCRIPTION 'Identifier for the high-numbered end of the runway.',
+	he_ident      				VARCHAR(7) 			%DESCRIPTION 'Identifier for the high-numbered end of the runway.',
 	he_latitude_deg 			DOUBLE 				%DESCRIPTION 'Latitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is north), if available.',
 	he_longitude_deg 			DOUBLE 				%DESCRIPTION 'Longitude of the centre of the high-numbered end of the runway, in decimal degrees (positive is east), if available',
 	he_location   				DOUBLE 				%DESCRIPTION '',
