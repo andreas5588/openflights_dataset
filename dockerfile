@@ -1,8 +1,4 @@
-#ARG IMAGE=store/intersystems/iris-community:2021.2.0.649.0
-#ARG IMAGE=containers.intersystems.com/intersystems/iris-community:2022.1.0.114.0
-#ARG IMAGE=containers.intersystems.com/intersystems/iris-community:2022.1.0.199.0
-#ARG IMAGE=containers.intersystems.com/intersystems/iris-community:2022.2.0.368.0
-ARG IMAGE=containers.intersystems.com/intersystems/iris-community:2023.1.0.207.0
+ARG IMAGE=containers.intersystems.com/intersystems/iris-community:latest-cd
 FROM $IMAGE
 
 USER root   
