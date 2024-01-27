@@ -72,7 +72,7 @@ After this you should be able to query the OPENFLIGHTS namespace as you wish. [H
 
  ![Query the database](/doc/sqldatalens_show_fk_targets.gif)
 
-
+The screenshots are from the tool [SQL DATA LENS](https://sqldatalens.com/) that is optimised for unique features of InterSystems IRIS & InterSystems Caché databases.
 
 ## Data in this model
 
